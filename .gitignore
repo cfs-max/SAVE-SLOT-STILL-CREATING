@@ -1,0 +1,9 @@
+# WorkBuddy 运行时/项目内部数据（含个人记忆，勿进公开仓库）
+.workbuddy/
+__pycache__/
+*.pyc
+node_modules/
+# 原始音乐源文件已内联进 princess-dressup.html，无需入库
+music/
+# 临时产物
+_regress_out.txt

@@ -1,0 +1,355 @@
+[  1] 一、换装物品展示与交互逻辑。
+[  2] 不同年龄的存档点有不同数量的物品。
+[  3] 物品分服饰和其他两种类型，服饰可以穿戴，其他物品是展示。
+[  4] 服饰，在衣柜中，鼠标悬浮，弹出简约悬浮框，展示服饰名称和描述（只展示英文内容，中午只是参考）。
+[  5] 其他物品，在衣柜中，鼠标点击，弹出弹窗，标题展示物品名称，主体展示物品图片，在下方展示物品描述（只展示英文内容，中午只是参考）。
+[  6] 部分物品有交互动作，在衣柜中，鼠标点击，弹出弹窗，标题展示物品名称，主体展示物品图片，下方展示描述，还有yes or no的选项（只展示英文内容
+[  7] 选择yes后，后续存档点中的物品会切换图片和展示内容。
+[  9] 游戏内容。
+[ 10] （所有图片素材路径为：D:\下载\换装\网页游戏\游戏界面基础素材图）
+[ 11] 一开始首页为纯色背景
+[ 13] 鼠标样式为
+[ 15] 中间是电脑图标
+[ 17] 有个发光字start在电脑上浮动
+[ 19] 点击start，进入虚拟xp界面
+[ 21] 桌面左侧为纵向排列的五个存档点文件夹，初始只有5岁的能点击，图标为
+[ 23] 其他的不可点击，图标为
+[ 25] 点击存档点文件夹，在桌面右侧展开一个游戏窗口。
+[ 26] 游戏窗口标题栏有一个“X”按钮，点击后可关闭游戏界面。
+[ 28] 接下来按年龄分别描述内容：
+[ 29] （1）5岁
+[ 30] 游戏背景为
+[ 32] 初始人物立绘为
+[ 34] 换装台为
+[ 36] 衣柜图片为
+[ 38] 衣柜中有四件物品：
+[ 39] 1、雏菊
+[ 40] Daisies
+[ 41] 图片为
+[ 42] [Image]             
+[ 43] 2、蓬蓬裙 ：有点夸张的蓬蓬裙，是我最喜欢的粉色！
+[ 44] Puff-skirt: A slightly over-the-top puff-skirt in my favourite shade of pink!
+[ 45] 图片为
+[ 47] 粉色上衣：
+[ 48] Pink top
+[ 49] 图片为
+[ 51] 4、紫色兔子玩偶：其实是盗版的jellycat玩偶，但是我最好的伙伴。
+[ 52] Purple rabbit soft toy: It’s actually a knock-off of a Jellycat soft toy, but it’s my best friend.
+[ 53] 图片为
+[ 55] 游戏动作：
+[ 56] 鼠标悬浮裙子，弹窗展示裙子的英文名称和描述，内容为“Puff-skirt”、“A slightly over-the-top puff-skirt in my favourite shade of pink!”。
+[ 57] 鼠标点击裙子，穿到人物下半身。
+[ 58] 鼠标悬浮上衣，弹窗展示上衣的英文名称，内容为“Pink top”。
+[ 59] 鼠标点击上衣，穿到人物上半身。
+[ 60] 鼠标悬浮兔子，弹窗展示兔子玩偶英文名称和描述，内容为“Purple rabbit soft toy”、“It’s actually a knock-off of a Jellycat soft toy, but it’s my best friend.”。
+[ 61] 鼠标点击兔子，兔子放到人物左手上。
+[ 62] 3、鼠标点击雏菊，弹窗展示雏菊英文名称和雏菊图片，文字内容为“Daisies”。可以点击“X”，点击后关闭该弹窗。
+[ 63] 弹窗图片为
+[ 65] 同时，弹出第二个弹窗，内容为;
+[ 66] “The petals are already starting to wilt. Should I take this moment with me, or leave it where it is?”
+[ 68] 可点击“X”、“keep it”或“leave it”。
+[ 69] 点击弹窗右上角的“X”即关闭按钮，等同于“leave it”。
+[ 70] 点击“keep it”，雏菊戴到人物立绘头部右耳，同时将影响8岁的物品“图画本”，从没有带走雏菊的图画本图片切换为带走雏菊的图画本。
+[ 71] 最终换装效果为（注意人物立绘、换装台、物品摆放的位置按效果图来）。
+[ 73] 换装完成后，点击存档按钮。
+[ 74] 存档按钮位置在每个场景的左下角，图片为
+[ 76] 存档后换装游戏界面收进5岁的存档文件夹中。5岁的文件夹图标变成
+[ 78] 8岁的文件夹变成可点击，图标为
+[ 80] 其他剩余文件夹不变，仍为不可点击。
+[ 81] （2）8岁
+[ 82] 游戏背景为
+[ 84] 初始人物立绘为
+[ 86] 换装台为
+[ 88] 衣柜图片为
+[ 90] 衣柜中有七件物品：
+[ 91] 1、塑胶宝石
+[ 92] Gemstone
+[ 93] 图片为
+[ 94] [Image]             
+[ 95] 2、蓝色T恤衫：喜欢粉色似乎是一件有点矫情的事情，现在的我也许应该喜欢蓝色吗，这样更酷。
+[ 96] Blue T-shirt: Liking pink seems a bit pretentious; perhaps I should start liking blue now – it’s much cooler.
+[ 97] 图片为
+[ 99] 3、凉鞋 
+[100] Sandals
+[101] 图片为
+[103] 4、牛仔裙 
+[104] Denim skirt
+[105] 图片为
+[107] 七分裤 ：现在看有点过时的搭配。
+[108] Three-quarter-length trousers: an outfit that looks a bit old-fashioned now.
+[109] 图片为
+[111] 图画本：喜欢在数学课偷偷掏出来涂鸦
+[112] Sketchbook：I like to secretly pull it out during maths lessons to doodle in it.
+[113] 图片为
+[115] 袖套 ：妈妈说我太调皮了，这样就不会吧手弄脏啦！
+[116] Arm warmers: Mum says I’m too mischievous, so this way I won’t get my hands dirty!
+[117] 图片为
+[119] 游戏动作：
+[120] 鼠标悬浮T恤，弹窗展示T恤的英文名称和描述，内容为“Blue T-shirt”、“Liking pink seems a bit pretentious; perhaps I should start liking blue now – it’s much cooler.”。
+[121] 鼠标点击T恤，穿到人物上半身。
+[122] 鼠标悬浮凉鞋，弹窗展示凉鞋英文名称，内容为“Sandals”。
+[123] 鼠标点击凉鞋，凉鞋穿到人物脚上。
+[124] 鼠标悬浮牛仔裙，弹窗展示牛仔裙英文名称，内容为“Denim skirt”。
+[125] 鼠标点击牛仔裙，牛仔裙穿到人物下半身。
+[126] 鼠标悬浮七分裤，弹窗展示七分裤英文名称和描述，内容为“Three-quarter-length trousers”、“an outfit that looks a bit old-fashioned now.”。
+[127] 鼠标点击七分裤，七分裤穿到人物下半身。
+[128] 鼠标点击图画本，弹窗展示图画本英文名称、（打开的）图画本图片和描述，文字内容为“Sketchbook”、“I like to secretly pull it out during maths lessons to doodle
+[129] 弹窗图片为
+[131] 同时，（打开的）图画本放到人物左侧上方。
+[132] 打开的图画本有两张图片，需要按5岁的选择进行展示。
+[133] 第一种是5岁时，没有带走雏菊。（无雏菊的）图画本图片为
+[135] 第二种是5岁时，带走了雏菊。（有雏菊的）图画本图片为
+[138] 鼠标悬浮袖套，弹窗展示袖套英文名称和描述，内容为“Arm warmers”、“Mum says I’m too mischievous, so this way I won’t get my hands dirty!”。
+[139] 鼠标点击袖套，袖套穿到人物手臂。
+[140] 鼠标点击宝石，弹窗展示宝石英文名称和（抓在手上的）宝石图片，文字内容为“Gemstone”。可以点击“X”，点击后关闭该弹窗。
+[141] 弹窗图片为
+[143] （抓在手上的）宝石图片
+[144] [Image]同时，弹出第二个弹窗，内容为;
+[145] “A fleeting discovery—it looks like an ornament that’s fallen off someone’s shoe. Should I stop and pick it up?”
+[147] 可点击“X”、“stop it”或“pick it up”，点击弹窗右上角的“X”即关闭按钮，等同于“stop it”，点击“pick it up”，将（抓在手上的）宝石图片放到人
+[148] 最终换装效果为（注意人物立绘、换装台、物品摆放的位置按效果图来，忽略红色箭头）。
+[150] 换装完成后，点击存档按钮。
+[151] 存档按钮位置在每个场景的左下角，图片为
+[153] 存档后换装游戏界面收进8岁的存档文件夹中。8岁的文件夹图标变成
+[155] 12岁的文件夹变成可点击，图标为
+[157] 其他剩余文件夹不变，仍为不可点击。
+[158] （3）12岁
+[159] 游戏背景为
+[161] 初始人物立绘为
+[163] 换装台为
+[165] 衣柜图片为
+[167] 衣柜中有六件物品：
+[168] 1、束脚裤 ：跳舞的时候更帅气。
+[169] Tapered pants: Look more handsome when dancing.  
+[170] 图片为
+[171] [Image]             
+[172] 2、ipad：爸爸妈妈送我的生日礼物，我经常拿他涂鸦。
+[173] iPad：It’s a birthday present from Mum and Dad, and I often use it to doodle.
+[174] 图片为
+[176] 3、运动鞋
+[177] Trainers
+[178] 图片为
+[180] 4、高领上衣
+[181] High-neck hoodie
+[182] 图片为
+[184] 5、笔记本
+[185] Notebook
+[186] 图片为
+[188] 6、口红 ：妈妈不用的口红给我了。
+[189] Lipstick：Mom gave me the lipstick she doesn't use.
+[190] 图片为
+[192] 游戏动作：
+[193] 鼠标悬浮束脚裤，弹窗展示束脚裤的英文名称和描述，内容为“Cuffed trousers”、“Look more handsome when dancing.”。
+[194] 鼠标点击束脚裤，穿到人物下半身。
+[195] 2、鼠标点击iPad，弹窗展示iPad英文名称、（使用中的）iPad图片、描述，文字内容为“iPad”、“It’s a birthday present from Mum and Dad, and I often use it to doodle.
+[196] 弹窗图片为
+[197] [Image]，同时，（使用中的）iPad图片放到人物立绘右侧下方。
+[198] （使用中的）iPad图片为
+[200] 3、鼠标悬浮运动鞋，弹窗展示运动鞋英文名称，内容为“Trainers”。
+[201] 鼠标点击运动鞋，运动鞋穿到人物脚上。
+[202] 4、鼠标悬浮高领上衣，弹窗展示高领上衣英文名称，内容为“High-neck hoodie”。
+[203] 鼠标点击高领上衣，高领上衣穿到人物上半身。
+[204] 5、鼠标点击笔记本，弹窗展示笔记本英文名称和（翻开的）笔记本图片，文字内容为“Notebook”。可以点击“X”，点击后关闭该弹窗。
+[205] 弹窗图片为
+[207] （翻开的）笔记本图片为
+[209] 同时，弹出弹窗，内容为;
+[210] “Should I pay attention in class and take notes, or stick some stickers in the blank spaces and have a bit of a doodle?”
+[212] 可点击“X”、“pay attention in class”或“draw pictures”，点击弹窗右上角的“X”即关闭按钮，等同于“pay attention in class”，点击“draw pictures”，（画画
+[213] （画画后的）笔记本图片为
+[216] 6、鼠标悬浮口红，弹窗展示口红英文名称和描述，文字内容为“Lipstick”、“Mom gave me the lipstick she doesn't use.”。
+[217] 鼠标点击口红，人物立绘更新为（涂口红的）人物立绘。
+[218] （涂口红的）人物立绘图片为
+[223] 最终换装效果为（注意人物立绘、换装台、物品摆放的位置按效果图来，忽略红色箭头）。
+[225] 换装完成后，点击存档按钮。
+[226] 存档按钮位置在每个场景的左下角，图片为
+[228] 存档后换装游戏界面收进12岁的存档文件夹中。12岁的文件夹图标变成
+[230] 15岁的文件夹变成可点击，图标为
+[232] 其他剩余文件夹不变，仍为不可点击。
+[233] （4）15岁
+[234] 游戏背景为
+[236] 初始人物立绘为
+[238] 换装台为
+[240] 衣柜图片为
+[242] 衣柜中有十件物品：
+[243] 1、穿戴甲：便宜购买的穿戴甲。
+[244] Wearable Nail Art: Affordable Wearable Nails。 
+[245] 图片为
+[246] [Image]             
+[247] 2、耳环 ：和朋友一起去打了耳洞。
+[248] Earrings: I went with a friend to get my ears pierced.
+[249] 图片为
+[251] 3、黑T恤：黑色能显出腰身。
+[252] Black T-shirt: Black helps to accentuate the waist. 
+[253] 图片为
+[255] 4、牛仔裤 ：自己挑选的喇叭裤，我喜欢复古的风格
+[256] Jeans: A pair of flared jeans I chose myself; I like the vintage style.
+[257] 图片为
+[259] 头戴式耳机：天天带着，音乐的世界没有那么多烦恼。
+[260] Headphones: Wear them every day, and the world of music is free from worries.  
+[261] 图片为
+[263] 牛仔外套 
+[264] Jacket
+[265] 图片为
+[267] 靴子
+[268] Boots
+[269] 图片为
+[271] .ipad：我在iPad上设计的原创角色收到了网络上大家的喜爱，可以给自己赚零花钱了。
+[272] iPad: The original characters I designed on my iPad have become a hit online, so I can now earn a bit of pocket money.
+[273] 图片为
+[275] 9、化妆品 ：零零碎碎也买了一些化妆品，自己学着化妆(点击完替换成新的画完妆的人物皮)
+[276] Cosmetics: I’ve picked up a few bits and bobs of cosmetics here and there, and I’m teaching myself how to apply make-up.
+[277] 图片为
+[279] 10、REMAKE T恤
+[280] REMAKE T-shirt
+[281]  图片为
+[283] 游戏动作：
+[284] 1、鼠标悬浮穿戴甲，弹窗展示穿戴甲的英文名称、（戴手上的）穿戴甲图片和描述，文字内容为“Wearable Nail Art”、“Affordable Wearable Nails.”。可以点击
+[285] 弹窗图片为
+[286] [Image]同时，（戴手上的）穿戴甲图片放到人物立绘右侧上方。
+[287] （戴手上的）穿戴甲图片为
+[289] 2、鼠标悬浮耳环，弹窗展示耳环的英文名称和描述，内容为“Earrings”、“I went with a friend to get my ears pierced.”。
+[290] 鼠标点击耳环，戴到人物耳朵上。
+[291] 3、鼠标悬浮黑T恤，弹窗展示黑T恤的英文名称和描述，内容为“Black T-shirt”、“Black helps to accentuate the waist.”。
+[292] 鼠标点击黑T恤，穿到人物上半身。
+[293] 4、鼠标悬浮牛仔裤，弹窗展示牛仔裤的英文名称和描述，内容为“Jeans”、“A pair of flared jeans I chose myself; I like the vintage style.”。
+[294] 鼠标点击牛仔裤，穿到人物下半身。
+[295] 5、鼠标悬浮头戴式耳机，弹窗展示头戴式耳机的英文名称和描述，内容为“Headphones”、“Wear them every day, and the world of music is free from worries.”。
+[296] 鼠标点击头戴式耳机，戴到人物头上。
+[297] 6、鼠标悬浮牛仔外套，弹窗展示牛仔外套的英文名称，内容为“Jacket”。
+[298] 鼠标点击牛仔外套，穿到人物上半身，盖在T恤上面。
+[299] 7、鼠标悬浮靴子，弹窗展示靴子的英文名称，内容为“Boots”。
+[300] 鼠标点击靴子，穿到人物脚上。
+[301] 8、鼠标悬浮iPad，弹窗展示iPad的英文名称、iPad图片、描述，文字内容为“iPad”、“The original characters I designed on my iPad have become a hit online, so I can now earn 
+[302] 弹窗图片为
+[303] [Image]，同时，iPad图片放到人物立绘左侧下方。
+[304] iPad图片为
+[306] 9、鼠标悬浮化妆品，弹窗展示化妆品英文名称和描述，文字内容为“Cosmetics”、“I’ve picked up a few bits and bobs of cosmetics here and there, and I’m teaching myself
+[307] 鼠标点击化妆品，人物立绘更新为（化妆后的）人物立绘。
+[308] （化妆后的）人物立绘图片为
+[310] 10、鼠标点击REMAKET恤，弹窗展示REMAKE T恤英文名称、REMAKE T恤图片和描述，文字内容为“REMAKE T-shirt”、“The stars and the pony used to live in the doodle book from ma
+[311] 弹窗图片为
+[313] REMAKE T恤图片为
+[315] 同时，弹出弹窗，内容为;
+[316] “Today I fancy wearing the T-shirt I made myself – even if the neckline’s a bit crooked and you can still make out the word ‘remake’ in the handwriting – or should I just go for something 
+[318] 可点击“X”、“remake t-shirt”或“choose comfortable outfits”，点击弹窗右上角的“X”即关闭按钮，等同于“choose comfortable outfits”，点击“remake t-shirt”，R
+[319] 最终换装效果为（注意人物立绘、换装台、物品摆放的位置按效果图来，忽略红色箭头）。
+[321] 换装完成后，点击存档按钮。
+[322] 存档按钮位置在每个场景的左下角，图片为
+[324] 存档后换装游戏界面收进15岁的存档文件夹中。15岁的文件夹图标变成
+[326] 18岁的文件夹变成可点击，图标为
+[328] （5）18岁
+[329] 游戏背景为
+[331] 初始人物立绘为
+[333] 换装台为
+[335] 衣柜图片为
+[337] 衣柜中有十八件物品：
+[338] 鼻钉唇钉：自己去打了想打了很久的鼻钉唇钉，亮闪闪的让人心情特别好。
+[339] Nose and lip piercings: I finally went and got the nose and lip piercings I’d been wanting for ages; they’re so sparkly they really lift my spirits. 
+[340] 图片为
+[341] [Image]             
+[342] 粉色卫裤：粉色是我喜欢的颜色之一，我不觉得这有什么好尴尬的，她很漂亮。
+[343] Pink tracksuit bottoms: Pink is one of my favourite colours; I don’t see why that should be embarrassing – they’re lovely.
+[344] 图片为
+[346] 粉色珍珠项链：喜欢这种fancy的质感，很适合我。
+[347] Pink pearl necklace: I love this fancy look; it suits me perfectly. 
+[348] 图片为
+[350] 化妆包：买了真正好的，是自己的化妆品。
+[351] Make-up bag: I’ve bought a really good one—it’s for my own make-up. 
+[352] 图片为
+[354] 5、黄色豹纹外套：攒钱买了最爱的设计师品牌。
+[355] Yellow leopard-print coat: I saved up to buy my favourite designer brand.    
+[356] 图片为
+[358] 6、黄色丝袜：亮眼的黄色，朋友说太夸张了，但我还是很喜欢。
+[359] Yellow tights: A striking yellow – my friends say they’re a bit over the top, but I still really like them.
+[360] 图片为
+[362] 7、托特包
+[363] Tote bag
+[364] 图片为
+[366] 8、五角星耳环
+[367] Five-pointed star earrings
+[368] 图片为
+[370] 珍珠耳饰 
+[371] Pearl earrings
+[372] 图片为
+[374] 珍珠项链：像散落在胸前的露珠 
+[375] Pearl necklace
+[376]  图片为
+[378] Macbook（两种图片：8岁时没有pick it up宝石则为光外壳/8岁时pick it up了宝石则为钻石装饰版本）
+[379] MacBook (diamond-encrusted ver）
+[380] 光外壳MacBook图片
+[382] 钻石装饰MacBook图片
+[384] 蓝色条纹染发
+[385] Blue striped hair dye
+[386] 图片为
+[388] 蓝色鞋子
+[389] Blue shoes
+[390] 图片为
+[392] 玫红色吊带上衣
+[393] Magenta strappy top
+[394] 图片为
+[396] 书堆：各个科目的教科书和笔记本。
+[397] Pile of books: textbooks and exercise books for various subjects.
+[398] 图片为
+[400] “时尚女王”印花蓝色吊带
+[401] ‘Queen of Fashion’ printed blue halter-neck top
+[402] 图片为
+[404] 蓝色流苏裙：喜欢海岛的风格，自由，热烈。
+[405] Blue fringed skirt: I love the island style—it’s free-spirited and vibrant.
+[406] 图片为
+[408] 兔子包挂：丑萌的彩虹兔子，我总是把她挂在包上。
+[409] Bunny Bag Charm：An ugly-cute rainbow bunny. I always clip her onto my bag.
+[410] 图片为
+[412] 游戏动作：
+[413] 1、鼠标悬浮鼻钉唇钉，弹窗展示鼻钉唇钉的英文名称和描述，文字内容为“Nose and lip piercings”、“I finally went and got the nose and lip piercings I’d been wanting 
+[414] 鼠标点击鼻钉唇钉，戴到人物脸上唇部。
+[415] 2、鼠标悬浮粉色卫裤，弹窗展示粉色卫裤的英文名称和描述，内容为“Pink tracksuit bottoms”、“Pink is one of my favourite colours; I don’t see why that should be embar
+[416] 鼠标点击粉色卫裤，穿到人物下半身。
+[417] 3、鼠标悬浮粉色珍珠项链，弹窗展示粉色珍珠项链的英文名称和描述，内容为“Pink pearl necklace”、“I love this fancy look; it suits me perfectly. ”。
+[418] 鼠标点击粉色珍珠项链，戴到人物颈部。
+[419] 4、鼠标悬浮化妆包，弹窗展示化妆包英文名称和描述，文字内容为“Make-up bag”、“I’ve bought a really good one—it’s for my own make-up.”。
+[420] 鼠标点击化妆包，人物立绘更新为（化妆后的）人物立绘。
+[421] （化妆后的）人物立绘图片为
+[423] 5、鼠标悬浮黄色豹纹外套，弹窗展示黄色豹纹外套的英文名称和描述，内容为“Yellow leopard-print coat”、“I saved up to buy my favourite designer brand.”。
+[424] 鼠标点击黄色豹纹外套，穿到人物上半身，盖在吊带图片上面。
+[425] 6、鼠标悬浮黄色丝袜，弹窗展示黄色丝袜的英文名称和描述，内容为“Yellow tights”、“A striking yellow – my friends say they’re a bit over the top, but I still reall
+[426] 鼠标点击黄色丝袜，穿到人物腿上。
+[427] 7、鼠标悬浮托特包，弹窗展示托特包的英文名称，内容为“Tote bag”。
+[428] 鼠标点击托特包，放到人物右手腰侧。
+[429] 8、鼠标悬浮五角星耳环，弹窗展示五角星耳环的英文名称，内容为“Five-pointed star earrings”。
+[430] 鼠标点击五角星耳环，戴到人物耳朵上。
+[431] 9、鼠标悬浮珍珠耳饰，弹窗展示珍珠耳饰的英文名称，内容为“Pearl earrings”。
+[432] 鼠标点击珍珠耳饰，戴到人物耳朵上。
+[433] 10、鼠标悬浮珍珠项链，弹窗展示珍珠项链的英文名称，内容为“Pearl necklace”。
+[434] 鼠标点击珍珠项链，戴到人物脖子上。
+[435] 11、鼠标悬浮Macbook，弹窗展示Macbook的英文名称和描述，内容为“Macbook”、“It looks very much like the few I used to pick up off the ground when I was a child. I realise I’
+[436] 12、鼠标悬浮蓝色条纹染发，弹窗展示蓝色条纹染发的英文名称，内容为“Blue striped hair dye”。
+[437] 鼠标点击蓝色条纹染发，戴到人物头上。
+[438] 13、鼠标悬浮蓝色鞋子，弹窗展示蓝色鞋子的英文名称，内容为“Blue shoes”。
+[439] 鼠标点击蓝色鞋子，穿到人物脚上。
+[440] 14、鼠标悬浮玫红色吊带上衣，弹窗展示玫红色吊带上衣的英文名称，内容为“Magenta strappy top”。
+[441] 鼠标点击玫红色吊带上衣，穿到人物上半身。
+[442] 15、鼠标悬浮书堆，弹窗展示书堆的英文名称，内容为“Pile of books: textbooks and exercise books for various subjects.”。
+[443] 16、鼠标悬浮“时尚女王”印花蓝色吊带，弹窗展示蓝色吊带的英文名称，内容为“‘Queen of Fashion’ printed blue halter-neck top.”。
+[444] 鼠标点击蓝色吊带，穿到人物上半身。
+[445] 17、鼠标悬浮蓝色流苏裙，弹窗展示蓝色流苏裙的英文名称、描述，内容为“Blue fringed skirt”、“I love the island style—it’s free-spirited and vibrant.”。
+[446] 鼠标点击蓝色流苏裙，穿到人物下半身。
+[447] 18、鼠标悬浮兔子包挂，弹窗展示兔子包挂的英文名称，内容为“Bunny Bag Charm”、“An ugly-cute rainbow bunny. I always clip her onto my bag.‌”。
+[448] 鼠标点击兔子包挂，放到人物右手腰侧，如有托特包则盖在托特包图片上面。
+[450] 最终换装效果为（注意人物立绘、换装台、物品摆放的位置按效果图来，忽略红色箭头）。
+[452] 换装完成后，点击存档按钮。
+[453] 存档按钮位置在每个场景的左下角，图片为
+[455] 存档后18岁的文件夹图标变成
+[457] 同时游戏界面开始按顺序滚动展示以下图片
+[458] 图片1
+[460] 图片2
+[462] 可点击“X”、“free play once again”，点击弹窗右上角的“X”即关闭按钮，换装游戏界面收进18岁的存档文件夹中，点击“free play once again”，游戏界面回
+[463] 音乐
+[464] 五个场景都有自己的背景音乐。
+[465] 5岁-Lucky one-Mich
+[466] 8岁-Mad at Disney-salem ilese
+[467] 12岁-Hotel-Claire Rosinkranz
+[468] 15岁-hate that i made you love me-Ariana Grande
+[469] 18岁-New Jeans-NewJeans
+[470] 进入游戏场景后自动播放，可点击音乐按钮，暂停和恢复播放。
+[471] 音乐按钮图片为
+[473] 音乐按钮位置在每个场景的左上角。

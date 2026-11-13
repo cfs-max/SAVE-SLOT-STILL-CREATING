@@ -1,0 +1,120 @@
+IMG p 12 image1.jpeg        | 前: （所有图片素材路径为：D:\下载\换装\网页游戏\游戏界面基础素材图） / 一开始首页为纯色背景 | 后: 鼠标样式为
+IMG p 14 image2.png         | 前: 鼠标样式为 | 后: 中间是电脑图标
+IMG p 16 image3.png         | 前: 中间是电脑图标 | 后: 有个发光字start在电脑上浮动
+IMG p 18 image4.png         | 前: 有个发光字start在电脑上浮动 | 后: 点击start，进入虚拟xp界面
+IMG p 20 image5.png         | 前: 点击start，进入虚拟xp界面 | 后: 桌面左侧为纵向排列的五个存档点文件夹，初始只有5岁的能点击，图标为
+IMG p 22 image6.png         | 前: 桌面左侧为纵向排列的五个存档点文件夹，初始只有5岁的能点击，图标为 | 后: 其他的不可点击，图标为
+IMG p 24 image7.png         | 前: 其他的不可点击，图标为 | 后: 点击存档点文件夹，在桌面右侧展开一个游戏窗口。 / 游戏窗口标题栏有一个“X”按钮，点击后可关闭游戏界面。
+IMG p 27 image8.png         | 前: 点击存档点文件夹，在桌面右侧展开一个游戏窗口。 / 游戏窗口标题栏有一个“X”按钮，点击后可关闭游戏界面。 | 后: 接下来按年龄分别描述内容： / （1）5岁
+IMG p 31 image9.png         | 前: （1）5岁 / 游戏背景为 | 后: 初始人物立绘为
+IMG p 33 image10.png        | 前: 初始人物立绘为 | 后: 换装台为
+IMG p 35 image11.png        | 前: 换装台为 | 后: 衣柜图片为
+IMG p 37 image12.png        | 前: 衣柜图片为 | 后: 衣柜中有四件物品： / <w:tab w:val="left" w:pos="560"/><w:
+IMG p 42 image13.png        | 前: <w:tab w:val="left" w:pos="560"/><w: / <w:tab w:val="left" w:pos="560" | 后: <w:tab w:val="left" w:pos="560"/><w: / <w:tab w:val="left" w:pos="560"
+IMG p 46 image14.png        | 前: <w:tab w:val="left" w:pos="560"/><w: / <w:tab w:val="left" w:pos="560" | 后: <w:tab w:val="left" w:pos="560"/><w: / <w:tab w:val="left" w:pos="560"
+IMG p 50 image15.png        | 前: <w:tab w:val="left" w:pos="560"/><w: / <w:tab w:val="left" w:pos="560" | 后: <w:tab w:val="left" w:pos="560"/><w: / Purple rabbit soft toy: It’s ac
+IMG p 54 image16.png        | 前: Purple rabbit soft toy: It’s actuall / 图片为 | 后: 游戏动作： / 鼠标悬浮裙子，弹窗展示裙子的英文名称和描述，内容为“Puff-skirt
+IMG p 64 image17.png        | 前: 3、鼠标点击雏菊，弹窗展示雏菊英文名称和雏菊图片，文字内容为“Daisi / 弹窗图片为 | 后: 同时，弹出第二个弹窗，内容为; / “The petals are already starting to 
+IMG p 67 image18.png        | 前: 同时，弹出第二个弹窗，内容为; / “The petals are already starting to  | 后: 可点击“X”、“keep it”或“leave it”。 / 点击弹窗右上角的“X”即关闭按钮，等同于“leave it”。
+IMG p 72 image19.jpeg       | 前: 点击“keep it”，雏菊戴到人物立绘头部右耳，同时将影响8岁的物品“ / 最终换装效果为（注意人物立绘、换装台、物品摆放的位置按效果图来 | 后: 换装完成后，点击存档按钮。 / 存档按钮位置在每个场景的左下角，图片为
+IMG p 75 image20.png        | 前: 换装完成后，点击存档按钮。 / 存档按钮位置在每个场景的左下角，图片为 | 后: 存档后换装游戏界面收进5岁的存档文件夹中。5岁的文件夹图标变成
+IMG p 77 image21.png        | 前: 存档后换装游戏界面收进5岁的存档文件夹中。5岁的文件夹图标变成 | 后: 8岁的文件夹变成可点击，图标为
+IMG p 79 image6.png         | 前: 8岁的文件夹变成可点击，图标为 | 后: 其他剩余文件夹不变，仍为不可点击。 / （2）8岁
+IMG p 83 image22.png        | 前: （2）8岁 / 游戏背景为 | 后: 初始人物立绘为
+IMG p 85 image23.png        | 前: 初始人物立绘为 | 后: 换装台为
+IMG p 87 image24.png        | 前: 换装台为 | 后: 衣柜图片为
+IMG p 89 image12.png        | 前: 衣柜图片为 | 后: 衣柜中有七件物品： / 1、塑胶宝石
+IMG p 94 image25.png        | 前: <w:tab w:val="left" w:pos="560"/><w: / <w:tab w:val="left" w:pos="560" | 后: <w:tab w:val="left" w:pos="560"/><w: / <w:tab w:val="left" w:pos="560"
+IMG p 98 image26.png        | 前: <w:tab w:val="left" w:pos="560"/><w: / <w:tab w:val="left" w:pos="560" | 后: 3、凉鞋  / Sandals
+IMG p102 image27.png        | 前: Sandals / 图片为 | 后: <w:tab w:val="left" w:pos="560"/><w: / <w:tab w:val="left" w:pos="560"
+IMG p106 image28.png        | 前: <w:tab w:val="left" w:pos="560"/><w: / 图片为 | 后: <w:tab w:val="left" w:pos="560"/><w: / <w:tab w:val="left" w:pos="560"
+IMG p110 image29.png        | 前: <w:tab w:val="left" w:pos="560"/><w: / 图片为 | 后: <w:tab w:val="left" w:pos="560"/><w: / <w:tab w:val="left" w:pos="560"
+IMG p114 image30.png        | 前: <w:tab w:val="left" w:pos="560"/><w: / <w:tab w:val="left" w:pos="560" | 后: <w:tab w:val="left" w:pos="560"/><w: / <w:tab w:val="left" w:pos="560"
+IMG p118 image31.png        | 前: <w:tab w:val="left" w:pos="560"/><w: / <w:tab w:val="left" w:pos="560" | 后: 游戏动作： / 鼠标悬浮T恤，弹窗展示T恤的英文名称和描述，内容为“Blue T-shi
+IMG p130 image17.png        | 前: 鼠标点击图画本，弹窗展示图画本英文名称、（打开的）图画本图片和描述，文字 / 弹窗图片为 | 后: 同时，（打开的）图画本放到人物左侧上方。 / 打开的图画本有两张图片，需要按5岁的选择进行展示。
+IMG p134 image32.png        | 前: 打开的图画本有两张图片，需要按5岁的选择进行展示。 / 第一种是5岁时，没有带走雏菊。（无雏菊的）图画本图片为 | 后: 第二种是5岁时，带走了雏菊。（有雏菊的）图画本图片为
+IMG p137 image33.png        | 前: 第二种是5岁时，带走了雏菊。（有雏菊的）图画本图片为 | 后: 鼠标悬浮袖套，弹窗展示袖套英文名称和描述，内容为“Arm warmers / 鼠标点击袖套，袖套穿到人物手臂。
+IMG p142 image17.png        | 前: 鼠标点击宝石，弹窗展示宝石英文名称和（抓在手上的）宝石图片，文字内容为“ / 弹窗图片为 | 后: （抓在手上的）宝石图片 / 同时，弹出第二个弹窗，内容为;
+IMG p144 image34.png        | 前: （抓在手上的）宝石图片 | 后: “A fleeting discovery—it looks like 
+IMG p146 image35.png        | 前: 同时，弹出第二个弹窗，内容为; / “A fleeting discovery—it looks like  | 后: 可点击“X”、“stop it”或“pick it up”，点击弹窗右上 / 最终换装效果为（注意人物立绘、换装台、物品摆放的位置按效果图来
+IMG p149 image36.jpeg       | 前: 可点击“X”、“stop it”或“pick it up”，点击弹窗右上 / 最终换装效果为（注意人物立绘、换装台、物品摆放的位置按效果图来 | 后: 换装完成后，点击存档按钮。 / 存档按钮位置在每个场景的左下角，图片为
+IMG p152 image20.png        | 前: 换装完成后，点击存档按钮。 / 存档按钮位置在每个场景的左下角，图片为 | 后: 存档后换装游戏界面收进8岁的存档文件夹中。8岁的文件夹图标变成
+IMG p154 image37.png        | 前: 存档后换装游戏界面收进8岁的存档文件夹中。8岁的文件夹图标变成 | 后: 12岁的文件夹变成可点击，图标为
+IMG p156 image6.png         | 前: 12岁的文件夹变成可点击，图标为 | 后: 其他剩余文件夹不变，仍为不可点击。 / （3）12岁
+IMG p160 image38.png        | 前: （3）12岁 / 游戏背景为 | 后: 初始人物立绘为
+IMG p162 image39.png        | 前: 初始人物立绘为 | 后: 换装台为
+IMG p164 image40.png        | 前: 换装台为 | 后: 衣柜图片为
+IMG p166 image12.png        | 前: 衣柜图片为 | 后: 衣柜中有六件物品： / <w:tab w:val="left" w:pos="560"/><w:
+IMG p171 image41.png        | 前: <w:tab w:val="left" w:pos="560"/><w: / <w:tab w:val="left" w:pos="560" | 后: <w:tab w:val="left" w:pos="560"/><w: / <w:tab w:val="left" w:pos="560"
+IMG p175 image42.png        | 前: <w:tab w:val="left" w:pos="560"/><w: / <w:tab w:val="left" w:pos="560" | 后: 3、运动鞋 / Trainers
+IMG p179 image43.png        | 前: Trainers / 图片为 | 后: <w:tab w:val="left" w:pos="560"/><w: / <w:tab w:val="left" w:pos="560"
+IMG p183 image44.png        | 前: <w:tab w:val="left" w:pos="560"/><w: / <w:tab w:val="left" w:pos="560" | 后: 5、笔记本 / Notebook
+IMG p187 image45.png        | 前: Notebook / 图片为 | 后: <w:tab w:val="left" w:pos="560"/><w: / <w:tab w:val="left" w:pos="560"
+IMG p191 image46.png        | 前: <w:tab w:val="left" w:pos="560"/><w: / <w:tab w:val="left" w:pos="560" | 后: 游戏动作： / 鼠标悬浮束脚裤，弹窗展示束脚裤的英文名称和描述，内容为“Cuffed t
+IMG p197 image17.png        | 前: 2、鼠标点击iPad，弹窗展示iPad英文名称、（使用中的）iPad图片 / 弹窗图片为 | 后: （使用中的）iPad图片为
+IMG p199 image47.png        | 前: ，同时，（使用中的）iPad图片放到人物立绘右侧下方。 / （使用中的）iPad图片为 | 后: 3、鼠标悬浮运动鞋，弹窗展示运动鞋英文名称，内容为“Trainers”。 / 鼠标点击运动鞋，运动鞋穿到人物脚上。
+IMG p206 image17.png        | 前: 5、鼠标点击笔记本，弹窗展示笔记本英文名称和（翻开的）笔记本图片，文字内 / 弹窗图片为 | 后: （翻开的）笔记本图片为
+IMG p208 image48.png        | 前: （翻开的）笔记本图片为 | 后: 同时，弹出弹窗，内容为; / “Should I pay attention in class and
+IMG p211 image49.png        | 前: 同时，弹出弹窗，内容为; / “Should I pay attention in class and | 后: 可点击“X”、“pay attention in class”或“dra / （画画后的）笔记本图片为
+IMG p214 image50.png        | 前: 可点击“X”、“pay attention in class”或“dra / （画画后的）笔记本图片为 | 后: 6、鼠标悬浮口红，弹窗展示口红英文名称和描述，文字内容为“Lipstic
+IMG p219 image51.jpeg       | 前: 鼠标点击口红，人物立绘更新为（涂口红的）人物立绘。 / （涂口红的）人物立绘图片为 | 后: 
+IMG p224 image52.jpeg       | 前: 最终换装效果为（注意人物立绘、换装台、物品摆放的位置按效果图来，忽略红色 | 后: 换装完成后，点击存档按钮。 / 存档按钮位置在每个场景的左下角，图片为
+IMG p227 image20.png        | 前: 换装完成后，点击存档按钮。 / 存档按钮位置在每个场景的左下角，图片为 | 后: 存档后换装游戏界面收进12岁的存档文件夹中。12岁的文件夹图标变成
+IMG p229 image53.png        | 前: 存档后换装游戏界面收进12岁的存档文件夹中。12岁的文件夹图标变成 | 后: 15岁的文件夹变成可点击，图标为
+IMG p231 image6.png         | 前: 15岁的文件夹变成可点击，图标为 | 后: 其他剩余文件夹不变，仍为不可点击。 / （4）15岁
+IMG p235 image54.png        | 前: （4）15岁 / 游戏背景为 | 后: 初始人物立绘为
+IMG p237 image55.png        | 前: 初始人物立绘为 | 后: 换装台为
+IMG p239 image56.png        | 前: 换装台为 | 后: 衣柜图片为
+IMG p241 image12.png        | 前: 衣柜图片为 | 后: 衣柜中有十件物品： / <w:tab w:val="left" w:pos="560"/><w:
+IMG p246 image57.png        | 前: <w:tab w:val="left" w:pos="560"/><w: / <w:tab w:val="left" w:pos="560" | 后: <w:tab w:val="left" w:pos="560"/><w: / <w:tab w:val="left" w:pos="560"
+IMG p250 image58.png        | 前: <w:tab w:val="left" w:pos="560"/><w: / <w:tab w:val="left" w:pos="560" | 后: 3、黑T恤：黑色能显出腰身。 / Black T-shirt: Black helps to accent
+IMG p254 image59.png        | 前: Black T-shirt: Black helps to accent / 图片为 | 后: <w:tab w:val="left" w:pos="560"/><w: / <w:tab w:val="left" w:pos="560"
+IMG p258 image60.png        | 前: <w:tab w:val="left" w:pos="560"/><w: / <w:tab w:val="left" w:pos="560" | 后: 头戴式耳机：天天带着，音乐的世界没有那么多烦恼。 / Headphones: Wear them every day, and
+IMG p262 image61.png        | 前: Headphones: Wear them every day, and / 图片为 | 后: <w:tab w:val="left" w:pos="560"/><w: / <w:tab w:val="left" w:pos="560"
+IMG p266 image62.png        | 前: <w:tab w:val="left" w:pos="560"/><w: / <w:tab w:val="left" w:pos="560" | 后: <w:tab w:val="left" w:pos="560"/><w: / <w:tab w:val="left" w:pos="560"
+IMG p270 image63.png        | 前: <w:tab w:val="left" w:pos="560"/><w: / <w:tab w:val="left" w:pos="560" | 后: .ipad：我在iPad上设计的原创角色收到了网络上大家的喜爱，可以给自 / iPad: The original characters I
+IMG p274 image64.png        | 前: iPad: The original characters I desi / 图片为 | 后: <w:tab w:val="left" w:pos="560"/><w: / <w:tab w:val="left" w:pos="560"
+IMG p278 image65.png        | 前: <w:tab w:val="left" w:pos="560"/><w: / <w:tab w:val="left" w:pos="560" | 后: <w:tab w:val="left" w:pos="560"/><w: / <w:tab w:val="left" w:pos="560"
+IMG p282 image66.png        | 前: <w:tab w:val="left" w:pos="560"/><w: /  图片为 | 后: 游戏动作： / 1、鼠标悬浮穿戴甲，弹窗展示穿戴甲的英文名称、（戴手上的）穿戴甲图片和描
+IMG p286 image17.png        | 前: 1、鼠标悬浮穿戴甲，弹窗展示穿戴甲的英文名称、（戴手上的）穿戴甲图片和描 / 弹窗图片为 | 后: （戴手上的）穿戴甲图片为
+IMG p288 image67.png        | 前: 同时，（戴手上的）穿戴甲图片放到人物立绘右侧上方。 / （戴手上的）穿戴甲图片为 | 后: <w:tab w:val="left" w:pos="560"/><w: / 鼠标点击耳环，戴到人物耳朵上。
+IMG p303 image17.png        | 前: 8、鼠标悬浮iPad，弹窗展示iPad的英文名称、iPad图片、描述，文 / 弹窗图片为 | 后: iPad图片为
+IMG p305 image64.png        | 前: ，同时，iPad图片放到人物立绘左侧下方。 / iPad图片为 | 后: <w:tab w:val="left" w:pos="560"/><w: / <w:tab w:val="left" w:pos="560"
+IMG p309 image68.jpeg       | 前: <w:tab w:val="left" w:pos="560"/><w: / <w:tab w:val="left" w:pos="560" | 后: <w:tab w:val="left" w:pos="560"/><w: / 弹窗图片为
+IMG p312 image17.png        | 前: <w:tab w:val="left" w:pos="560"/><w: / 弹窗图片为 | 后: REMAKE T恤图片为
+IMG p314 image66.png        | 前: REMAKE T恤图片为 | 后: 同时，弹出弹窗，内容为; / “Today I fancy wearing the T-shirt I
+IMG p317 image69.png        | 前: 同时，弹出弹窗，内容为; / “Today I fancy wearing the T-shirt I | 后: 可点击“X”、“remake t-shirt”或“choose comf / 最终换装效果为（注意人物立绘、换装台、物品摆放的位置按效果图来
+IMG p320 image70.jpeg       | 前: 可点击“X”、“remake t-shirt”或“choose comf / 最终换装效果为（注意人物立绘、换装台、物品摆放的位置按效果图来 | 后: 换装完成后，点击存档按钮。 / 存档按钮位置在每个场景的左下角，图片为
+IMG p323 image20.png        | 前: 换装完成后，点击存档按钮。 / 存档按钮位置在每个场景的左下角，图片为 | 后: 存档后换装游戏界面收进15岁的存档文件夹中。15岁的文件夹图标变成
+IMG p325 image71.png        | 前: 存档后换装游戏界面收进15岁的存档文件夹中。15岁的文件夹图标变成 | 后: 18岁的文件夹变成可点击，图标为
+IMG p327 image6.png         | 前: 18岁的文件夹变成可点击，图标为 | 后: （5）18岁 / 游戏背景为
+IMG p330 image72.png        | 前: （5）18岁 / 游戏背景为 | 后: 初始人物立绘为
+IMG p332 image73.png        | 前: 初始人物立绘为 | 后: 换装台为
+IMG p334 image74.png        | 前: 换装台为 | 后: 衣柜图片为
+IMG p336 image12.png        | 前: 衣柜图片为 | 后: 衣柜中有十八件物品： / <w:tab w:val="left" w:pos="560"/><w:
+IMG p341 image75.png        | 前: <w:tab w:val="left" w:pos="560"/><w: / <w:tab w:val="left" w:pos="560" | 后: <w:tab w:val="left" w:pos="560"/><w: / <w:tab w:val="left" w:pos="560"
+IMG p345 image76.png        | 前: <w:tab w:val="left" w:pos="560"/><w: / <w:tab w:val="left" w:pos="560" | 后: 粉色珍珠项链：喜欢这种fancy的质感，很适合我。 / Pink pearl necklace: I love this fan
+IMG p349 image77.png        | 前: Pink pearl necklace: I love this fan / 图片为 | 后: <w:tab w:val="left" w:pos="560"/><w: / <w:tab w:val="left" w:pos="560"
+IMG p353 image78.png        | 前: <w:tab w:val="left" w:pos="560"/><w: / <w:tab w:val="left" w:pos="560" | 后: 5、黄色豹纹外套：攒钱买了最爱的设计师品牌。 / Yellow leopard-print coat: I saved u
+IMG p357 image79.png        | 前: Yellow leopard-print coat: I saved u / 图片为 | 后: <w:tab w:val="left" w:pos="560"/><w: / <w:tab w:val="left" w:pos="560"
+IMG p361 image80.png        | 前: <w:tab w:val="left" w:pos="560"/><w: / <w:tab w:val="left" w:pos="560" | 后: <w:tab w:val="left" w:pos="560"/><w: / <w:tab w:val="left" w:pos="560"
+IMG p365 image81.png        | 前: <w:tab w:val="left" w:pos="560"/><w: / <w:tab w:val="left" w:pos="560" | 后: 8、五角星耳环 / Five-pointed star earrings
+IMG p369 image82.png        | 前: Five-pointed star earrings / 图片为 | 后: <w:tab w:val="left" w:pos="560"/><w: / <w:tab w:val="left" w:pos="560"
+IMG p373 image83.png        | 前: <w:tab w:val="left" w:pos="560"/><w: / <w:tab w:val="left" w:pos="560" | 后: <w:tab w:val="left" w:pos="560"/><w: / <w:tab w:val="left" w:pos="560"
+IMG p377 image84.png        | 前: <w:tab w:val="left" w:pos="560"/><w: /  图片为 | 后: Macbook（两种图片：8岁时没有pick it up宝石则为光外壳/ / MacBook (diamond-encrusted ver）
+IMG p381 image85.png        | 前: MacBook (diamond-encrusted ver） / 光外壳MacBook图片 | 后: 钻石装饰MacBook图片
+IMG p383 image86.png        | 前: 钻石装饰MacBook图片 | 后: 蓝色条纹染发 / Blue striped hair dye
+IMG p387 image87.png        | 前: Blue striped hair dye / 图片为 | 后: <w:tab w:val="left" w:pos="560"/><w: / <w:tab w:val="left" w:pos="560"
+IMG p391 image88.png        | 前: <w:tab w:val="left" w:pos="560"/><w: / 图片为 | 后: 玫红色吊带上衣 / Magenta strappy top
+IMG p395 image89.png        | 前: Magenta strappy top / 图片为 | 后: 书堆：各个科目的教科书和笔记本。 / Pile of books: textbooks and exercis
+IMG p399 image90.png        | 前: Pile of books: textbooks and exercis / 图片为 | 后: “时尚女王”印花蓝色吊带 / ‘Queen of Fashion’ printed blue halt
+IMG p403 image91.png        | 前: ‘Queen of Fashion’ printed blue halt / 图片为 | 后: 蓝色流苏裙：喜欢海岛的风格，自由，热烈。 / Blue fringed skirt: I love the islan
+IMG p407 image92.png        | 前: Blue fringed skirt: I love the islan / 图片为 | 后: 兔子包挂：丑萌的彩虹兔子，我总是把她挂在包上。 / Bunny Bag Charm：An ugly-cute rainbow
+IMG p411 image93.png        | 前: Bunny Bag Charm：An ugly-cute rainbow / 图片为 | 后: 游戏动作： / 1、鼠标悬浮鼻钉唇钉，弹窗展示鼻钉唇钉的英文名称和描述，文字内容为“No
+IMG p422 image94.jpeg       | 前: <w:tab w:val="left" w:pos="560"/><w: / <w:tab w:val="left" w:pos="560" | 后: <w:tab w:val="left" w:pos="560"/><w: / 鼠标点击黄色豹纹外套，穿到人物上半身，盖在吊带图片上面。
+IMG p451 image95.jpeg       | 前: 最终换装效果为（注意人物立绘、换装台、物品摆放的位置按效果图来，忽略红色 | 后: 换装完成后，点击存档按钮。 / 存档按钮位置在每个场景的左下角，图片为
+IMG p454 image20.png        | 前: 换装完成后，点击存档按钮。 / 存档按钮位置在每个场景的左下角，图片为 | 后: 存档后18岁的文件夹图标变成
+IMG p456 image96.png        | 前: 存档后18岁的文件夹图标变成 | 后: 同时游戏界面开始按顺序滚动展示以下图片 / 图片1
+IMG p459 image97.png        | 前: 同时游戏界面开始按顺序滚动展示以下图片 / 图片1 | 后: 图片2
+IMG p461 image98.png        | 前: 图片2 | 后: 可点击“X”、“free play once again”，点击弹窗右上 / 音乐
+IMG p472 image99.png        | 前: 进入游戏场景后自动播放，可点击音乐按钮，暂停和恢复播放。 / 音乐按钮图片为 | 后: 音乐按钮位置在每个场景的左上角。

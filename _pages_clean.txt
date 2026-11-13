@@ -1,0 +1,513 @@
+Application/Blank/ISOb
+%TPMacInspectorSegmentIdentifierFormat
+Should I pay attention in class and take notes, or stick some stickers in the blank spaces and have a bit of a doodle?
+Today I fancy wearing the T-shirt I made myself
+even if the neckline’s a bit crooked and you can still make out the word ‘remake’ in the handwriting
+or should I just go for something familiar and comfortable?
+Purple rabbit soft toy: It’s actually a knock-off of a Jellycat soft toy, but it’s my best friend.
+A fleeting discovery—it looks like an ornament that’s fallen off someone’s shoe. Should I stop and pick it up?
+”“It looks very much like the few I used to pick up off the ground when I was a child. I realise I’ve always loved these little sparkling things.”
+1.可穿戴的物品是悬浮时就出现英文文本介绍
+名次在上介绍文本在下 2.不可穿戴的是可点击
+The petals are already starting to wilt. Should I take this moment with me, or leave it where it is?
+Blue T-shirt: Liking pink seems a bit pretentious; perhaps I should start liking blue now
+Three-quarter-length trousers: an outfit that looks a bit old-fashioned now.
+喜欢在数学课偷偷掏出来涂鸦Sketchbook
+I like to secretly pull it out during maths lessons to doodle in it
+Arm warmers: Mum says I’m too mischievous, so this way I won’t get my hands dirty!*'
+5.高领卫衣High-neck hoodie
+It’s a birthday present from Mum and Dad, and I often use it to doodle.*
+Wearable Nail Art: Affordable Wearable Nails
+Earrings: I went with a friend to get my ears pierced.
+自己学着化妆(点击完替换成新的画完妆的人物皮)
+Cosmetics: I’ve picked up a few bits and bobs of cosmetics here and there, and I’m teaching myself how to apply make-up.
+我喜欢复古的风格Jeans: A pair of flared jeans I chose myself; I like the vintage style.
+Headphones: Wear them every day, and the world of music is free from worries.  7.牛仔外套 Jacket
+我在iPad上设计的原创角色收到了网络上大家的喜爱
+iPad: The original characters I designed on my iPad have become a hit online, so I can now earn a bit of pocket money.   10.REMAKE T恤
+Nose and lip piercings: I finally went and got the nose and lip piercings I’d been wanting for ages; they’re so sparkly they really lift my spirits.
+Pink tracksuit bottoms: Pink is one of my favourite colours; I don’t see why that should be embarrassing
+Pink pearl necklace: I love this fancy look; it suits me perfectly. 4.化妆包
+Make-up bag: I’ve bought a really good one—it’s for my own make-up. (点击完替换成新的画完妆的人物皮)
+6. Yellow tights: A striking yellow
+my friends say they’re a bit over the top, but I still really like them.
+8.五角星耳环Five-pointed star earrings
+9.珍珠耳饰 Pearl earrings
+像散落在胸前的露珠 Pearl necklace
+MacBook (diamond-encrusted ver
+12.蓝色条纹染发Blue striped hair dye
+14.玫红色吊带上衣Magenta strappy top
+Pile of books: textbooks and exercise books for various subjects.
+16:“时尚女王”印花蓝色吊带‘Queen of Fashion’ printed blue halter-neck top
+Blue fringed skirt: I love the island style—it’s free-spirited and vibrant.*K
+$captions-0-shapestyle-Object Caption
+"captions-0-shapestyle-Object Title
+"captions-0-shapestyle-对象标题
+"captions-0-shapestyle-对象说明
+character-style-hyperlink
+character-style-null
+chart-0-categoryaxis_0
+chart-0-paragraphStyle_0
+chart-0-paragraphStyle_1
+chart-0-paragraphStyle_10
+chart-0-paragraphStyle_11
+chart-0-paragraphStyle_12
+chart-0-paragraphStyle_13
+chart-0-paragraphStyle_14
+chart-0-paragraphStyle_15
+chart-0-paragraphStyle_16
+chart-0-paragraphStyle_17
+chart-0-paragraphStyle_18
+chart-0-paragraphStyle_19
+chart-0-paragraphStyle_2
+chart-0-paragraphStyle_20
+chart-0-paragraphStyle_21
+chart-0-paragraphStyle_22
+chart-0-paragraphStyle_23
+chart-0-paragraphStyle_24
+chart-0-paragraphStyle_25
+chart-0-paragraphStyle_26
+chart-0-paragraphStyle_27
+chart-0-paragraphStyle_28
+chart-0-paragraphStyle_29
+chart-0-paragraphStyle_3
+chart-0-paragraphStyle_4
+chart-0-paragraphStyle_5
+chart-0-paragraphStyle_6
+chart-0-paragraphStyle_7
+chart-0-paragraphStyle_8
+chart-0-paragraphStyle_9
+chart-0-referenceLine_0
+chart-1-categoryaxis_0
+chart-1-paragraphStyle_0
+chart-1-paragraphStyle_1
+chart-1-paragraphStyle_10
+chart-1-paragraphStyle_11
+chart-1-paragraphStyle_12
+chart-1-paragraphStyle_13
+chart-1-paragraphStyle_14
+chart-1-paragraphStyle_15
+chart-1-paragraphStyle_16
+chart-1-paragraphStyle_17
+chart-1-paragraphStyle_18
+chart-1-paragraphStyle_19
+chart-1-paragraphStyle_2
+chart-1-paragraphStyle_20
+chart-1-paragraphStyle_21
+chart-1-paragraphStyle_22
+chart-1-paragraphStyle_23
+chart-1-paragraphStyle_24
+chart-1-paragraphStyle_25
+chart-1-paragraphStyle_26
+chart-1-paragraphStyle_27
+chart-1-paragraphStyle_28
+chart-1-paragraphStyle_29
+chart-1-paragraphStyle_3
+chart-1-paragraphStyle_4
+chart-1-paragraphStyle_5
+chart-1-paragraphStyle_6
+chart-1-paragraphStyle_7
+chart-1-paragraphStyle_8
+chart-1-paragraphStyle_9
+chart-1-referenceLine_0
+chart-2-categoryaxis_0
+chart-2-paragraphStyle_0
+chart-2-paragraphStyle_1
+chart-2-paragraphStyle_10
+chart-2-paragraphStyle_11
+chart-2-paragraphStyle_12
+chart-2-paragraphStyle_13
+chart-2-paragraphStyle_14
+chart-2-paragraphStyle_15
+chart-2-paragraphStyle_16
+chart-2-paragraphStyle_17
+chart-2-paragraphStyle_18
+chart-2-paragraphStyle_19
+chart-2-paragraphStyle_2
+chart-2-paragraphStyle_20
+chart-2-paragraphStyle_21
+chart-2-paragraphStyle_22
+chart-2-paragraphStyle_23
+chart-2-paragraphStyle_24
+chart-2-paragraphStyle_25
+chart-2-paragraphStyle_26
+chart-2-paragraphStyle_27
+chart-2-paragraphStyle_28
+chart-2-paragraphStyle_29
+chart-2-paragraphStyle_3
+chart-2-paragraphStyle_4
+chart-2-paragraphStyle_5
+chart-2-paragraphStyle_6
+chart-2-paragraphStyle_7
+chart-2-paragraphStyle_8
+chart-2-paragraphStyle_9
+chart-2-referenceLine_0
+chart-3-categoryaxis_0
+chart-3-paragraphStyle_0
+chart-3-paragraphStyle_1
+chart-3-paragraphStyle_10
+chart-3-paragraphStyle_11
+chart-3-paragraphStyle_12
+chart-3-paragraphStyle_13
+chart-3-paragraphStyle_14
+chart-3-paragraphStyle_15
+chart-3-paragraphStyle_16
+chart-3-paragraphStyle_17
+chart-3-paragraphStyle_18
+chart-3-paragraphStyle_19
+chart-3-paragraphStyle_2
+chart-3-paragraphStyle_20
+chart-3-paragraphStyle_21
+chart-3-paragraphStyle_22
+chart-3-paragraphStyle_23
+chart-3-paragraphStyle_24
+chart-3-paragraphStyle_25
+chart-3-paragraphStyle_26
+chart-3-paragraphStyle_27
+chart-3-paragraphStyle_28
+chart-3-paragraphStyle_29
+chart-3-paragraphStyle_3
+chart-3-paragraphStyle_4
+chart-3-paragraphStyle_5
+chart-3-paragraphStyle_6
+chart-3-paragraphStyle_7
+chart-3-paragraphStyle_8
+chart-3-paragraphStyle_9
+chart-3-referenceLine_0
+chart-4-categoryaxis_0
+chart-4-paragraphStyle_0
+chart-4-paragraphStyle_1
+chart-4-paragraphStyle_10
+chart-4-paragraphStyle_11
+chart-4-paragraphStyle_12
+chart-4-paragraphStyle_13
+chart-4-paragraphStyle_14
+chart-4-paragraphStyle_15
+chart-4-paragraphStyle_16
+chart-4-paragraphStyle_17
+chart-4-paragraphStyle_18
+chart-4-paragraphStyle_19
+chart-4-paragraphStyle_2
+chart-4-paragraphStyle_20
+chart-4-paragraphStyle_21
+chart-4-paragraphStyle_22
+chart-4-paragraphStyle_23
+chart-4-paragraphStyle_24
+chart-4-paragraphStyle_25
+chart-4-paragraphStyle_26
+chart-4-paragraphStyle_27
+chart-4-paragraphStyle_28
+chart-4-paragraphStyle_29
+chart-4-paragraphStyle_3
+chart-4-paragraphStyle_4
+chart-4-paragraphStyle_5
+chart-4-paragraphStyle_6
+chart-4-paragraphStyle_7
+chart-4-paragraphStyle_8
+chart-4-paragraphStyle_9
+chart-4-referenceLine_0
+chart-5-categoryaxis_0
+chart-5-paragraphStyle_0
+chart-5-paragraphStyle_1
+chart-5-paragraphStyle_10
+chart-5-paragraphStyle_11
+chart-5-paragraphStyle_12
+chart-5-paragraphStyle_13
+chart-5-paragraphStyle_14
+chart-5-paragraphStyle_15
+chart-5-paragraphStyle_16
+chart-5-paragraphStyle_17
+chart-5-paragraphStyle_18
+chart-5-paragraphStyle_19
+chart-5-paragraphStyle_2
+chart-5-paragraphStyle_20
+chart-5-paragraphStyle_21
+chart-5-paragraphStyle_22
+chart-5-paragraphStyle_23
+chart-5-paragraphStyle_24
+chart-5-paragraphStyle_25
+chart-5-paragraphStyle_26
+chart-5-paragraphStyle_27
+chart-5-paragraphStyle_28
+chart-5-paragraphStyle_29
+chart-5-paragraphStyle_3
+chart-5-paragraphStyle_4
+chart-5-paragraphStyle_5
+chart-5-paragraphStyle_6
+chart-5-paragraphStyle_7
+chart-5-paragraphStyle_8
+chart-5-paragraphStyle_9
+chart-5-referenceLine_0
+column-style-default
+drawingline-0-drawinglineStyle
+equation-0-imageStyle
+paragraph-style-default
+!stickyComment-0-paragraphstyle-12
+!stickyComment-0-paragraphstyle-13
+!stickyComment-0-paragraphstyle-14
+!stickyComment-0-paragraphstyle-15
+!stickyComment-0-paragraphstyle-16
+!stickyComment-0-paragraphstyle-18
+!stickyComment-0-paragraphstyle-22
+!stickyComment-0-paragraphstyle-24
+!stickyComment-0-paragraphstyle-28
+stickyComment-0-shapeStyle
+svgimport-0-shapestyle
+tableCell-0-bodyStyle
+tableCell-0-categoryLevel1Row
+tableCell-0-categoryLevel2Row
+tableCell-0-categoryLevel3Row
+tableCell-0-categoryLevel4Row
+tableCell-0-categoryLevel5Row
+tableCell-0-footerRowStyle
+tableCell-0-headerColumnStyle
+tableCell-0-headerRowStyle
+tableCell-0-labelLevel1Row
+tableCell-0-labelLevel2Row
+tableCell-0-labelLevel3Row
+tableCell-0-labelLevel4Row
+tableCell-0-labelLevel5Row
+"tableCell-0-pivotBodySummaryColumn
+tableCell-0-pivotBodySummaryRow
+$tableCell-0-pivotHeaderColumnSummary
+tableCell-1-bodyStyle
+tableCell-1-categoryLevel1Row
+tableCell-1-categoryLevel2Row
+tableCell-1-categoryLevel3Row
+tableCell-1-categoryLevel4Row
+tableCell-1-categoryLevel5Row
+tableCell-1-footerRowStyle
+tableCell-1-headerColumnStyle
+tableCell-1-headerRowStyle
+tableCell-1-labelLevel1Row
+tableCell-1-labelLevel2Row
+tableCell-1-labelLevel3Row
+tableCell-1-labelLevel4Row
+tableCell-1-labelLevel5Row
+"tableCell-1-pivotBodySummaryColumn
+tableCell-1-pivotBodySummaryRow
+$tableCell-1-pivotHeaderColumnSummary
+tableCell-2-bodyStyle
+tableCell-2-categoryLevel1Row
+tableCell-2-categoryLevel2Row
+tableCell-2-categoryLevel3Row
+tableCell-2-categoryLevel4Row
+tableCell-2-categoryLevel5Row
+tableCell-2-footerRowStyle
+tableCell-2-headerColumnStyle
+tableCell-2-headerRowStyle
+tableCell-2-labelLevel1Row
+tableCell-2-labelLevel2Row
+tableCell-2-labelLevel3Row
+tableCell-2-labelLevel4Row
+tableCell-2-labelLevel5Row
+"tableCell-2-pivotBodySummaryColumn
+tableCell-2-pivotBodySummaryRow
+$tableCell-2-pivotHeaderColumnSummary
+tableCell-3-bodyStyle
+tableCell-3-categoryLevel1Row
+tableCell-3-categoryLevel2Row
+tableCell-3-categoryLevel3Row
+tableCell-3-categoryLevel4Row
+tableCell-3-categoryLevel5Row
+tableCell-3-footerRowStyle
+tableCell-3-headerColumnStyle
+tableCell-3-headerRowStyle
+tableCell-3-labelLevel1Row
+tableCell-3-labelLevel2Row
+tableCell-3-labelLevel3Row
+tableCell-3-labelLevel4Row
+tableCell-3-labelLevel5Row
+"tableCell-3-pivotBodySummaryColumn
+tableCell-3-pivotBodySummaryRow
+$tableCell-3-pivotHeaderColumnSummary
+tableCell-4-bodyStyle
+tableCell-4-categoryLevel1Row
+tableCell-4-categoryLevel2Row
+tableCell-4-categoryLevel3Row
+tableCell-4-categoryLevel4Row
+tableCell-4-categoryLevel5Row
+tableCell-4-footerRowStyle
+tableCell-4-headerColumnStyle
+tableCell-4-headerRowStyle
+tableCell-4-labelLevel1Row
+tableCell-4-labelLevel2Row
+tableCell-4-labelLevel3Row
+tableCell-4-labelLevel4Row
+tableCell-4-labelLevel5Row
+"tableCell-4-pivotBodySummaryColumn
+tableCell-4-pivotBodySummaryRow
+$tableCell-4-pivotHeaderColumnSummary
+tableCell-5-bodyStyle
+tableCell-5-categoryLevel1Row
+tableCell-5-categoryLevel2Row
+tableCell-5-categoryLevel3Row
+tableCell-5-categoryLevel4Row
+tableCell-5-categoryLevel5Row
+tableCell-5-footerRowStyle
+tableCell-5-headerColumnStyle
+tableCell-5-headerRowStyle
+tableCell-5-labelLevel1Row
+tableCell-5-labelLevel2Row
+tableCell-5-labelLevel3Row
+tableCell-5-labelLevel4Row
+tableCell-5-labelLevel5Row
+"tableCell-5-pivotBodySummaryColumn
+tableCell-5-pivotBodySummaryRow
+$tableCell-5-pivotHeaderColumnSummary
+tableCellText-0-labelLevel1Row
+tableCellText-0-labelLevel2Row
+tableCellText-0-labelLevel3Row
+tableCellText-0-labelLevel4Row
+tableCellText-0-labelLevel5Row
+tableCellText-1-labelLevel1Row
+tableCellText-1-labelLevel2Row
+tableCellText-1-labelLevel3Row
+tableCellText-1-labelLevel4Row
+tableCellText-1-labelLevel5Row
+tableCellText-2-labelLevel1Row
+tableCellText-2-labelLevel2Row
+tableCellText-2-labelLevel3Row
+tableCellText-2-labelLevel4Row
+tableCellText-2-labelLevel5Row
+tableCellText-3-labelLevel1Row
+tableCellText-3-labelLevel2Row
+tableCellText-3-labelLevel3Row
+tableCellText-3-labelLevel4Row
+tableCellText-3-labelLevel5Row
+tableCellText-4-labelLevel1Row
+tableCellText-4-labelLevel2Row
+tableCellText-4-labelLevel3Row
+tableCellText-4-labelLevel4Row
+tableCellText-4-labelLevel5Row
+tableCellText-5-labelLevel1Row
+tableCellText-5-labelLevel2Row
+tableCellText-5-labelLevel3Row
+tableCellText-5-labelLevel4Row
+tableCellText-5-labelLevel5Row
+tableName-0-shapeStyle
+tableName-1-shapeStyle
+tableName-2-shapeStyle
+tableName-3-shapeStyle
+tableName-4-shapeStyle
+tableName-5-shapeStyle
+text-0-liststyle-CircledNumber
+:text-0-liststyle-IdeographicFormalSimplifiedChineseDecimal
+4text-0-liststyle-IdeographicSimplifiedChineseDecimal
+text-0-liststyle-None
+text-0-paragraphstyle-Title
+text-1-liststyle-Bullet
+text-1-tocentrystyle
+text-11-paragraphstyle-Heading 1
+text-12-paragraphstyle-Heading 2
+text-13-paragraphstyle-Heading 3
+text-14-paragraphstyle-Heading 4
+text-2-liststyle-Bullet Big
+text-2-tocentrystyle
+text-20-paragraphstyle-Body 1
+text-26-paragraphstyle-Caption 3
+&text-29-paragraphstyle-Header & Footer
+text-3-liststyle-Image
+text-3-tocentrystyle
+$text-31-paragraphstyle-Footnote Text
+text-32-paragraphstyle-Label
+!text-33-paragraphstyle-Label Dark
+$text-34-paragraphstyle-Table Title 1
+$text-35-paragraphstyle-Table Style 1
+$text-36-paragraphstyle-Table Style 2
+$text-37-paragraphstyle-Table Style 3
+$text-38-paragraphstyle-Table Style 4
+$text-39-paragraphstyle-Table Style 5
+text-4-liststyle-Lettered
+text-4-tocentrystyle
+$text-40-paragraphstyle-Table Style 6
+$text-41-paragraphstyle-Table Style 7
+text-5-liststyle-Numbered
+text-6-liststyle-Harvard
+text-6-paragraphstyle-Subtitle
+text-7-liststyle-Dash
+text-8-liststyle-Note Taking
+textbox-0-shapestyle
+toc-entry-style-default
+drop-cap-style-default
+&captions-0-paragraphstyle-Caption Text
+'captions-0-paragraphstyle-Caption Title
+$captions-0-shapestyle-Object Caption*
+&captions-0-paragraphstyle-Caption Text*
+text-0-liststyle-None*
+"captions-0-shapestyle-Object Title*
+'captions-0-paragraphstyle-Caption Title*
+"captions-0-shapestyle-对象标题*
+"captions-0-shapestyle-对象说明*
+character-style-hyperlink*
+character-style-null*
+chart-0-categoryaxis_0*
+chart-0-paragraphStyle_0*
+chart-0-paragraphStyle_1*
+chart-0-paragraphStyle_10*
+chart-0-paragraphStyle_11*
+chart-0-paragraphStyle_12*
+chart-0-paragraphStyle_13*
+chart-0-paragraphStyle_14*
+chart-0-paragraphStyle_15*
+chart-0-paragraphStyle_16*
+chart-0-paragraphStyle_17*
+chart-0-paragraphStyle_18*
+chart-0-paragraphStyle_19*
+chart-0-paragraphStyle_2*
+chart-0-paragraphStyle_20*
+chart-0-paragraphStyle_21*
+chart-0-paragraphStyle_22*
+chart-0-paragraphStyle_23*
+chart-0-paragraphStyle_24*
+chart-0-paragraphStyle_25*
+chart-0-paragraphStyle_26*
+chart-0-paragraphStyle_27*
+chart-0-paragraphStyle_28*
+chart-0-paragraphStyle_29*
+chart-0-paragraphStyle_3*
+chart-0-paragraphStyle_4*
+chart-0-paragraphStyle_5*
+chart-0-paragraphStyle_6*
+chart-0-paragraphStyle_7*
+chart-0-paragraphStyle_8*
+chart-0-paragraphStyle_9*
+chart-0-referenceLine_0*
+chart-0-valueaxis_0*
+chart-0-valueaxis_1*
+chart-1-categoryaxis_0*
+chart-1-paragraphStyle_0*
+chart-1-paragraphStyle_1*
+chart-1-paragraphStyle_10*
+Tables/DataList-1950103"
+Tables/DataList-1950107"
+Tables/DataList-1950106"
+Tables/DataList-1950105"
+Tables/DataList-1950102"
+Tables/DataList-1950099"
+Tables/DataList-1950098"
+Tables/HeaderStorageBucket
+$Tables/HeaderStorageBucket-1734593-2"
+Tables/HeaderStorageBucket"
+Tables/DataList-1950782"
+$Tables/HeaderStorageBucket-1734582-2"
+Tables/DataList-1950108"
+Tables/DataList-2002513"
+Tables/DataList-1950101"
+CalculationEngine-1732585"
+TSCEReduceCalcEngineMsgSize
+TSTCategorizedTables
+Tables/DataList-2002719"
+Tables/DataList-1950100"
+AnnotationAuthorStorage
+AnnotationAuthorStorage-1732584"
+$Tables/HeaderStorageBucket-1734592-2"
+Tables/DataList-1950104"
+tile_paper_medgray.jpg"
+*#ginger/00b_theme/tile_paper_medgrayR
+bullet_circle-blk-resize.pdf"
+bullet_circle-blk-resize"`
+tile_paper_ltgray.jpg"
+*"ginger/00b_theme/tile_paper_ltgrayR
+hardcover_bullet_black.png"
+*&ginger/01_theme/hardcover_bullet_black*

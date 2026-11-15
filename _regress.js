@@ -909,4 +909,43 @@ function outsideChar(s){
      clock.length?('x='+clock[0].x.toFixed(1)+' y='+clock[0].y.toFixed(1)+' tb='+tb.toFixed(1)):'');
 }
 
+/* ---------------- 17. 谢幕只播一次（自由重玩不重播） ---------------- */
+{
+  const env=makeEnv(1280,720,1), s=env.sandbox, G=s.PrincessGame;
+  s.state.screen='DESKTOP';
+  ok('初始未播放过谢幕', G.state.endingShown===false);
+  for(let i=0;i<5;i++){ s.openFolder(i); s.saveSlot(); }
+  ok('首次集齐 5 个存档点 → 播放谢幕',
+     G.state.screen==='ENDING' && G.state.endingShown===true);
+  ok('首次播放后进入自由重玩', G.state.freePlay===true && G.state.unlocked===5);
+  s.freePlayAgain();
+  ok('Free play once again 回桌面', G.state.screen==='DESKTOP');
+
+  // 复现用户反馈：完成全部存档后，回前序存档点换装再保存
+  s.openFolder(0);
+  const it=G.WARDROBES[0].find(x=>x.kind==='wear');
+  s.wear(it);
+  s.saveSlot();
+  ok('前序存档点重存后仍停在桌面', G.state.screen==='DESKTOP',
+     'screen='+G.state.screen);
+  ok('谢幕标志保持已播放', G.state.endingShown===true);
+  ok('重存确实更新了存档快照',
+     !!G.state.saved[0] && G.state.saved[0].worn[it.id]===true);
+  ok('重存后仍全解锁可自由重玩', G.state.freePlay===true && s.folderOpen(4)===true);
+  ok('重存走普通保存动画而非结局分支', G.state.saveAnim===24,
+     'saveAnim='+G.state.saveAnim);
+
+  s.openFolder(2); s.saveSlot();
+  ok('另一个前序存档点重存同样不重播', G.state.screen==='DESKTOP');
+  s.openFolder(4); s.saveSlot();
+  ok('末个存档点重存同样不重播', G.state.screen==='DESKTOP');
+
+  // RESTART 后应该能完整重新体验（谢幕可再次触发）
+  s.resetAll();
+  ok('RESTART 重置谢幕标志', G.state.endingShown===false);
+  for(let i=0;i<5;i++){ s.openFolder(i); s.saveSlot(); }
+  ok('重新开始后仍能再次播放谢幕',
+     G.state.screen==='ENDING' && G.state.endingShown===true);
+}
+
 console.log('\n全部通过：'+pass+' 项断言');

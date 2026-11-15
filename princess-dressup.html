@@ -392,6 +392,7 @@ const state = {
   choices:{daisy:false,gem:false,notebook:false,remake:false},
   makeup:[false,false,false,false,false],
   modal:null, startMenu:false, muted:false, freePlay:false,
+  endingShown:false,  // 谢幕只播一次：集齐 5 个存档点后重进换装再保存不重播
   endingTick:0, saveAnim:0, hoverItem:null, tip:null,
   drag:null,          // 拖拽穿戴：{item, from:'wardrobe'|'char', x, y}
 };
@@ -401,6 +402,7 @@ function resetAll(){
   state.choices={daisy:false,gem:false,notebook:false,remake:false};
   state.makeup=[false,false,false,false,false];
   state.modal=null; state.startMenu=false; state.freePlay=false;
+  state.endingShown=false;
   state.endingTick=0; state.saveAnim=0; state.hoverItem=null; state.tip=null;
   state.drag=null;
   stopMusic();
@@ -1011,9 +1013,11 @@ function saveSlot(){
   if(state.age+1<5) state.unlocked=Math.max(state.unlocked,state.age+2);
   state.saveAnim=24;
   state.screen='DESKTOP'; pauseMusic();
-  if(state.completed.every(Boolean)){
+  // 谢幕只在「首次集齐 5 个存档点」时播放一次。之后自由重玩期间回到前序
+  // 存档点换装再保存，只更新该存档并回到桌面，不重新触发结局滚动。
+  if(!state.endingShown && state.completed.every(Boolean)){
     state.screen='ENDING'; state.endingTick=0; state.freePlay=true;
-    state.saveAnim=0;
+    state.endingShown=true; state.saveAnim=0;
   }
 }
 function freePlayAgain(){

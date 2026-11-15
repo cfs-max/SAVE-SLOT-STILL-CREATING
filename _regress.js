@@ -66,6 +66,35 @@ function clickAt(env, dx, dy){
   const clientX = (dx - v.x) * v.scale, clientY = (dy - v.y) * v.scale;
   env.handlers.pointerdown({clientX, clientY});
 }
+/* 原地按下+松手（真实浏览器里的一次「单击」） */
+function tapAt(env, x, y){
+  const v = env.sandbox.PrincessGame.view;
+  const ev = (xx,yy)=>({clientX:(xx-v.x)*v.scale, clientY:(yy-v.y)*v.scale, pointerId:1});
+  env.sandbox.draw();
+  env.handlers.pointerdown(ev(x,y));
+  env.handlers.pointerup(ev(x,y));
+}
+/* 完整的一次拖拽：按下 → 移动 → 松手（设计坐标） */
+function dragAt(env, x0, y0, x1, y1){
+  const v = env.sandbox.PrincessGame.view;
+  const ev = (x,y)=>({clientX:(x-v.x)*v.scale, clientY:(y-v.y)*v.scale, pointerId:1});
+  env.sandbox.draw();
+  env.handlers.pointerdown(ev(x0,y0));
+  env.handlers.pointermove(ev(x1,y1));
+  env.handlers.pointerup(ev(x1,y1));
+}
+function cellCenter(s, id){
+  const c = s.gridOf(s.winRect()).cells.find(x=>x.item.id===id);
+  return c ? [c.x+c.w/2, c.y+c.h/2] : null;
+}
+function charCenter(s){
+  const r = s.charRect(s.winRect());
+  return [r.x+r.w/2, r.y+r.h/2];
+}
+function outsideChar(s){
+  const wr = s.gridOf(s.winRect()).wr;
+  return [wr.x+wr.w/2, wr.y+wr.h/2];
+}
 
 /* ---------------- 1. 数据层 ---------------- */
 {
@@ -169,7 +198,8 @@ function clickAt(env, dx, dy){
   const v = G.view;
   clickAt(env, v.x + v.w*0.8, v.y + v.h*0.8);
   ok('标题页任意点击进入 DESKTOP', G.state.screen==='DESKTOP');
-  clickAt(env, v.x+8+48, v.y+8+44*1+20);   // 第 2 个文件夹（锁定）
+  const fc=env.sandbox.folderCell(1);
+  clickAt(env, fc.x+fc.w/2, fc.y+fc.h/2);   // 第 2 个文件夹（锁定）
   ok('锁定文件夹点击弹窗提示', G.state.modal && G.state.modal.kind==='info');
   env.sandbox.closeModal();
 }
@@ -235,7 +265,8 @@ function clickAt(env, dx, dy){
   ok('4 张交互弹窗都有独立按钮框配置', keys.every(k=>!!UI[k] && !!UI[k].yes && !!UI[k].no));
   ok('雏菊 / REMAKE 的 yes 在左', UI.chooseDaisy.yes[0]<UI.chooseDaisy.no[0] && UI.chooseRemake.yes[0]<UI.chooseRemake.no[0]);
   ok('宝石 / 上课的 yes 在右', UI.chooseGem.yes[0]>UI.chooseGem.no[0] && UI.chooseClass.yes[0]>UI.chooseClass.no[0]);
-  const base = s.modalRect('choice');
+  // 合并弹窗后，按钮归一化坐标以「下半区选项素材」的绘制矩形为准
+  const base = s.choiceImageRect(s.modalRect());
   for(const k of keys){
     const a=UI[k].yes, b=UI[k].no;
     ok(k+' 两个按钮框不重叠', a[2]<b[0] || b[2]<a[0]);
@@ -252,7 +283,7 @@ function clickAt(env, dx, dy){
     {k:'chooseClass',  age:2, id:'a12_notebook',  field:'notebook', label:'DRAW PICTURES'},
     {k:'chooseRemake', age:3, id:'a15_remake',    field:'remake',   label:'REMAKE T-SHIRT'},
   ];
-  const center=(bb)=>{ const r=s.modalRect('choice'); r.x=V.x+V.w-r.w-V.w*0.045;
+  const center=(bb)=>{ const r=s.choiceImageRect(s.modalRect());
     return [r.x+r.w*(bb[0]+bb[2])/2, r.y+r.h*(bb[1]+bb[3])/2]; };
   for(const c of cases){
     const item=G.WARDROBES[c.age].find(x=>x.id===c.id);
@@ -371,6 +402,7 @@ function clickAt(env, dx, dy){
   // 渲染层：格子 col/row 与布局一一对应，且能正确命中
   for(let a=0;a<5;a++){
     s.state.screen='DRESSUP'; s.state.age=a; s.state.choices.notebook=true; s.state.modal=null;
+    s.state.worn={}; s.state.slotOwner={};   // 避免已穿物品隐藏图标影响命中断言
     s.draw();
     const g=s.gridOf(s.winRect());
     ok(G.AGES[a].age+' 岁格子坐标按布局行列生成',
@@ -403,7 +435,7 @@ function clickAt(env, dx, dy){
   s.wear(trousers);
   ok('同 bottom 槽互斥', !s.state.worn[denim.id] && !!s.state.worn[trousers.id]);
   s.wear(trousers);
-  ok('再次点击同件可脱下', !s.state.worn[trousers.id]);
+  ok('wear() 内部同件切换仍可脱下', !s.state.worn[trousers.id]);
   ok('化妆品槽切换立绘', (()=>{ s.state.age=2; s.wear(W[2][5]); return s.state.makeup[2]===true; })());
 }
 
@@ -525,6 +557,356 @@ function clickAt(env, dx, dy){
   ok('进入换装页自动播音乐不抛错', s.state.screen==='DRESSUP');
   s.toggleMusic(); ok('静音切换', s.state.muted===true);
   s.toggleMusic(); ok('取消静音', s.state.muted===false);
+}
+
+/* ---------------- 9. 全站英文文案 / 桌面文件夹改版 ---------------- */
+{
+  const env = makeEnv(1280,720,1), s = env.sandbox, G = s.PrincessGame;
+  const drawn = [];
+  env.ctx.fillText = function(t){ drawn.push(String(t)); };
+  s.draw();                                              // TITLE
+  s.state.screen='DESKTOP'; s.draw();
+  s.state.startMenu=true; s.draw(); s.state.startMenu=false;
+  s.state.unlocked=5;
+  for(let a=0;a<5;a++){ s.openFolder(a); s.draw(); }     // 5 个换装窗口标题栏
+  s.openItemModal(G.WARDROBES[0][2]); s.draw(); s.closeModal();
+  s.lockedModal(1); s.draw(); s.closeModal();
+  s.state.screen='ENDING'; s.draw();
+  const cjk = drawn.filter(t=>/[\u4e00-\u9fff]/.test(t));
+  ok('所有绘制文字均为英文（无中文字符）', cjk.length===0, cjk.slice(0,5).join(' | '));
+  ok('XP 任务栏是 START 而不是「开始」', drawn.indexOf('START')>=0 && drawn.indexOf('开始')<0);
+  ok('信息弹窗确定按钮是 OK', drawn.indexOf('OK')>=0);
+  ok('开始菜单文案全英文', ['RESTART','LOAD MUSIC...','ABOUT','CLOSE'].every(t=>drawn.indexOf(t)>=0));
+  ok('5 个年龄段标题栏用 AGE x 英文', G.AGES.every(a=>/^AGE \d+$/.test(a.label)));
+  ok('5 个文件夹名称均为 AGE x SAVE SLOT',
+     G.folderLabels.join('|')==='AGE 5 SAVE SLOT|AGE 8 SAVE SLOT|AGE 12 SAVE SLOT|AGE 15 SAVE SLOT|AGE 18 SAVE SLOT',
+     G.folderLabels.join('|'));
+  ok('文件夹不再绘制 SLOT x / LOCKED 状态文字',
+     !drawn.some(t=>/^SLOT \d/.test(t) || t==='LOCKED' || t==='SLOT 1 OK'));
+  ok('锁定提示也是英文', drawn.indexOf('THE AGE 8 SAVE SLOT IS STILL LOCKED.')>=0);
+}
+{
+  // 桌面几何：左侧竖排、名称在图标下方、自适应放大且不越过任务栏
+  for(const [w,h] of [[1920,1080],[1280,720],[1024,768],[800,600],[360,640]]){
+    const env=makeEnv(w,h,1), s=env.sandbox, G=s.PrincessGame;
+    const cells=[0,1,2,3,4].map(i=>s.folderCell(i)), g=cells[0].g;
+    ok('视口 '+w+'×'+h+' 五个文件夹左侧竖排',
+       cells.every((c,i)=>c.x===cells[0].x && c.w===cells[0].w && (i===0||c.y>cells[i-1].y)));
+    ok('视口 '+w+'×'+h+' 名称+图标不超过单格高度',
+       g.iconH+g.gap+g.nameH<=g.slotH+0.01);
+    ok('视口 '+w+'×'+h+' 第 5 个文件夹不越过任务栏',
+       cells[4].y+g.iconH+g.gap+g.nameH<=s.taskbarY()+0.01);
+    ok('视口 '+w+'×'+h+' 图标放大且不超过 1.8 倍',
+       g.iconH>=20 && g.iconH<=38*1.8+0.01, 'iconH='+g.iconH.toFixed(1));
+    s.draw();
+  }
+}
+
+/* ---------------- 10. 存档按钮 / 人物立绘几何 ---------------- */
+{
+  const env=makeEnv(1280,720,1), s=env.sandbox, G=s.PrincessGame;
+  const win=s.winRect(), sb=s.saveBtnRect(win), cr=s.charRect(win);
+  ok('存档按钮缩小一半为 46×30', sb.w===46 && sb.h===30 && G.saveButton.w===46 && G.saveButton.h===30);
+  ok('存档按钮中心对齐换装台圆台图片',
+     Math.abs((sb.x+sb.w/2)-(win.x+win.w*0.2995))<0.01 &&
+     Math.abs((sb.y+sb.h/2)-(win.y+win.h*0.921))<0.01);
+  ok('存档按钮完整落在换装窗口内',
+     sb.x>win.x && sb.y>win.y && sb.x+sb.w<win.x+win.w && sb.y+sb.h<win.y+win.h);
+  s.state.screen='DESKTOP'; s.state.unlocked=5; s.openFolder(0); s.draw();
+  const rs=s.hit(sb.x+sb.w/2, sb.y+sb.h/2);
+  ok('存档按钮命中区与绘制矩形一致', !!rs && rs.key==='scene:save', rs&&rs.key);
+  ok('人物立绘放大到 0.92 倍窗口高', Math.abs(cr.h-win.h*0.920)<0.01, cr.h.toFixed(1));
+  // 五个年龄段人物素材脚底在源图 94.6%~97.7% 处；换装台圆台从 84.1% 起
+  [0.946,0.969,0.952,0.977,0.959].forEach((f,a)=>{
+    const foot=cr.y+cr.h*f;
+    ok('AGE '+G.AGES[a].age+' 脚落在换装台圆台上',
+       foot>win.y+win.h*0.841 && foot<win.y+win.h, foot.toFixed(1));
+  });
+  ok('人物命中矩形与绘制矩形一致',
+     s.inChar(cr.x+cr.w/2,cr.y+cr.h/2) && !s.inChar(win.x+win.w*0.9, win.y+win.h*0.5));
+}
+
+/* ---------------- 11. 拖拽穿戴 / 拖出脱下 / 非 wear 保持单击 ---------------- */
+{
+  const env=makeEnv(1280,720,1), s=env.sandbox, G=s.PrincessGame;
+  const all=G.WARDROBES.reduce((a,b)=>a.concat(b),[]), at=id=>all.find(x=>x.id===id);
+  s.state.screen='DESKTOP'; s.state.unlocked=5; s.openFolder(0);
+  const top=at('a5_top'), [ix,iy]=cellCenter(s,'a5_top');
+  const [cx,cy]=charCenter(s), [ox,oy]=outsideChar(s);
+  ok('可穿戴物品共 32 件', all.filter(x=>x.kind==='wear').length===32);
+  ok('用户点名的不可穿戴物品全部保持单击',
+     ['a5_daisy','a8_gem','a8_sketch','a12_ipad','a12_notebook','a12_lipstick',
+      'a15_nails','a15_ipad','a15_cosmetics','a18_makeupbag','a18_macbook','a18_books']
+       .every(id=>!s.draggable(at(id)) && at(id).kind!=='wear'));
+
+  tapAt(env, ix,iy);
+  ok('原地单击可穿戴物品不再直接穿上', !s.state.worn['a5_top'] && s.state.drag===null);
+  dragAt(env, ix,iy, cx,cy);
+  ok('从衣橱拖到人物立绘上即穿上',
+     !!s.state.worn['a5_top'] && s.state.slotOwner.top==='a5_top' && s.state.drag===null);
+  s.draw();
+  ok('穿上后衣橱该服饰图标隐藏', s.wardrobeHidden(top)===true);
+  const hidden=s.hit(ix,iy);
+  ok('穿上后衣橱该格不再有点击区', !hidden || hidden.key.indexOf('item:')!==0, hidden&&hidden.key);
+  const url2key={}; for(const k in G.assets) url2key[G.assets[k]]=k;
+  const painted=[]; env.ctx.drawImage=function(img){ const k=url2key[img&&img._src]; if(k) painted.push(k); };
+  s.draw();
+  ok('draw() 不再绘制已隐藏的衣橱图标', painted.indexOf('T_a5_top')<0);
+  ok('人物身上仍绘制该服饰图层', painted.indexOf('L_a5_top')>=0);
+
+  dragAt(env, cx,cy, ox,oy);
+  ok('从人物身上拖出即脱下',
+     !s.state.worn['a5_top'] && !s.state.slotOwner.top && s.state.drag===null);
+  s.draw();
+  const back=s.hit(ix,iy);
+  ok('脱下后衣橱图标与点击区恢复',
+     !s.wardrobeHidden(top) && !!back && back.key==='item:a5_top', back&&back.key);
+
+  dragAt(env, ix,iy, ox,oy);
+  ok('拖到人物之外松手＝取消穿戴', !s.state.worn['a5_top']);
+  dragAt(env, ix,iy, cx,cy);
+  ok('再次拖到人物上可重新穿上', !!s.state.worn['a5_top']);
+  dragAt(env, cx,cy, cx+2,cy+2);
+  ok('从人物起拖但没拖出去＝保持穿着', !!s.state.worn['a5_top']);
+
+  // 同槽互斥：18 岁星形 ↔ 珍珠耳环，隐藏/恢复图标要跟着切换
+  s.state.age=4; s.state.worn={}; s.state.slotOwner={}; s.state.screen='DRESSUP';
+  s.state.modal=null; s.draw();
+  const star=cellCenter(s,'a18_starear'), pearl=cellCenter(s,'a18_pearlear');
+  dragAt(env, star[0],star[1], cx,cy);
+  ok('拖星形耳环到人物上', !!s.state.worn['a18_starear'] && s.state.slotOwner.ears==='a18_starear');
+  s.draw();
+  dragAt(env, pearl[0],pearl[1], cx,cy);
+  ok('拖珍珠耳环替换同槽星形',
+     !!s.state.worn['a18_pearlear'] && !s.state.worn['a18_starear'] && s.state.slotOwner.ears==='a18_pearlear');
+  ok('替换后珍珠隐藏、星形图标恢复',
+     s.wardrobeHidden(at('a18_pearlear')) && !s.wardrobeHidden(at('a18_starear')));
+  s.state.worn={a18_hairdye:true,a18_pearlear:true};
+  ok('wornWearAt 取最上层（染发时耳环被提到最上）',
+     s.wornWearAt(cx,cy) && s.wornWearAt(cx,cy).id==='a18_pearlear');
+
+  // 非 wear 物品：单击行为完全不变
+  s.state.worn={}; s.state.slotOwner={}; s.state.modal=null; s.state.screen='DRESSUP';
+  s.state.age=0; s.draw();
+  const dz=cellCenter(s,'a5_daisy'); tapAt(env,dz[0],dz[1]);
+  ok('雏菊仍是单击打开二选一弹窗', !!s.state.modal && s.state.modal.kind==='choice' && s.state.drag===null);
+  s.closeModal();
+  s.state.age=1; s.draw();
+  const sk=cellCenter(s,'a8_sketch'); tapAt(env,sk[0],sk[1]);
+  ok('图画本仍是单击打开物品弹窗', !!s.state.modal && s.state.modal.kind==='item');
+  s.closeModal();
+  s.state.age=2; s.draw();
+  const lp=cellCenter(s,'a12_lipstick'); tapAt(env,lp[0],lp[1]);
+  ok('口红仍是单击切换化妆立绘', s.state.makeup[2]===true && s.state.modal===null);
+  s.state.age=4; s.draw();
+  const bk=cellCenter(s,'a18_books'); tapAt(env,bk[0],bk[1]);
+  ok('书堆仍是只显示悬浮说明、不弹窗', s.state.modal===null);
+  const mac=cellCenter(s,'a18_macbook'); tapAt(env,mac[0],mac[1]);
+  ok('MacBook 仍是单击打开物品弹窗', !!s.state.modal && s.state.modal.kind==='item');
+  s.closeModal();
+
+  s.beginDrag('wardrobe',top,ix,iy);
+  ok('beginDrag 写入拖拽态', !!s.state.drag && s.state.drag.from==='wardrobe');
+  s.openFolder(1);
+  ok('切换年龄段清除未完成拖拽', s.state.drag===null);
+}
+
+/* ---------------- 12. 拖拽预览与英文操作提示 ---------------- */
+{
+  const env=makeEnv(1280,720,1), s=env.sandbox, G=s.PrincessGame;
+  const drawn=[]; env.ctx.fillText=function(t){ drawn.push(String(t)); };
+  s.state.screen='DESKTOP'; s.state.unlocked=5; s.openFolder(0);
+  const item=G.WARDROBES[0].find(x=>x.id==='a5_top');
+  s.beginDrag('wardrobe',item,100,100); s.draw();
+  ok('从衣橱拖拽时显示英文提示 DROP ON ME TO WEAR', drawn.indexOf('DROP ON ME TO WEAR')>=0);
+  drawn.length=0;
+  s.beginDrag('char',item,100,100); s.draw();
+  ok('从人物拖拽时显示英文提示 DRAG OUT TO REMOVE', drawn.indexOf('DRAG OUT TO REMOVE')>=0);
+  s.cancelDrag();
+  ok('cancelDrag 清除拖拽态', s.state.drag===null);
+  ok('拖拽态可通过 PrincessGame.drag 观察', G.drag===null);
+}
+
+/* ---------------- 13. WARDROBE 透明底：只留蓝色线框 + 标题 ---------------- */
+{
+  const env=makeEnv(1280,720,1), s=env.sandbox, G=s.PrincessGame;
+  const rects=[], texts=[], painted=[];
+  env.ctx.fillRect=function(x,y,w,h){ rects.push({x,y,w,h,c:this.fillStyle}); };
+  env.ctx.fillText=function(t){ texts.push(String(t)); };
+  const url2key={}; for(const k in G.assets) url2key[G.assets[k]]=k;
+  env.ctx.drawImage=function(img){ const k=url2key[img&&img._src]; if(k) painted.push(k); };
+  const WHITE_PANEL='rgba(255,255,255,0.72)';
+  const scan=()=>({
+    panel: rects.filter(r=>r.c===WHITE_PANEL).length,
+    cellFill: rects.filter(r=>r.c==='rgba(255,255,255,0.55)'||r.c==='rgba(246,195,68,0.42)').length,
+    blueBox: rects.filter(r=>r.c==='#7ec8ef').length,
+    title: texts.indexOf('WARDROBE')>=0,
+  });
+  s.state.screen='DESKTOP'; s.state.unlocked=5; s.openFolder(0);
+  for(const a of [0,2,4]){
+    s.state.age=a; s.state.worn={}; s.state.slotOwner={}; s.state.modal=null;
+    rects.length=0; texts.length=0; painted.length=0;
+    s.draw();
+    const r=scan(), wr=s.gridOf(s.winRect()).wr;
+    ok('AGE '+G.AGES[a].age+' 物品栏不再铺白色半透明底', r.panel===0, 'panel='+r.panel);
+    ok('AGE '+G.AGES[a].age+' 标题下的白色分隔线已移除',
+       !rects.some(q=>q.c==='#ffffff' && q.h===1 && Math.abs(q.x-(wr.x+10))<0.01 && Math.abs(q.w-(wr.w-20))<0.01));
+    ok('AGE '+G.AGES[a].age+' 两条蓝色圆角线框仍在', r.blueBox>=8, 'blueRects='+r.blueBox);
+    ok('AGE '+G.AGES[a].age+' WARDROBE 标题仍在', r.title===true);
+    ok('AGE '+G.AGES[a].age+' 物品图标仍正常绘制', painted.length>0);
+  }
+  // 悬停 / 使用中：只描边框，不能把刚去掉的底色重新铺回来
+  s.state.age=1; s.state.worn={a8_sketch:true};   // 非 wear 的「使用中」道具 → 金色边框
+  const [ix,iy]=cellCenter(s,'a8_tshirt');        // hover 一件可穿戴物品 → 白色边框
+  const v=G.view;
+  env.handlers.pointermove({clientX:(ix-v.x)*v.scale, clientY:(iy-v.y)*v.scale});
+  s.draw(); s.draw();                       // 第 1 帧算出 hoverKey，第 2 帧用上它
+  rects.length=0; texts.length=0; painted.length=0; s.draw();
+  const h=scan();
+  ok('悬停 / 使用中的物品不铺半透明色块', h.panel===0 && h.cellFill===0, 'cellFill='+h.cellFill);
+  ok('悬停白框与使用中的金框都还在',
+     rects.some(r=>r.c==='#ffffff') && rects.some(r=>r.c==='#f6c344'));
+  ok('透明底下 8 岁物品图标仍绘制', painted.indexOf('T_a8_tshirt')>=0);
+}
+
+/* ---------------- 14. 悬浮框高透明底：底色极淡，文字靠亮描边保读 ---------------- */
+{
+  const env=makeEnv(1280,720,1), s=env.sandbox, G=s.PrincessGame;
+  const rects=[], texts=[];
+  env.ctx.fillRect=function(x,y,w,h){ rects.push({x,y,w,h,c:this.fillStyle}); };
+  env.ctx.fillText=function(t){ texts.push({t:String(t), c:this.fillStyle}); };
+  const rgb=c=>{
+    let m=/^#([0-9a-f]{6})$/i.exec(c);
+    if(m) return [0,2,4].map(i=>parseInt(m[1].slice(i,i+2),16));
+    m=/rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/.exec(c);
+    return m?[+m[1],+m[2],+m[3]]:[0,0,0];
+  };
+  const lum=c=>{ const [r,g,b]=rgb(c); return (0.2126*r+0.7152*g+0.0722*b)/255; };
+  const alphaOf=c=>{ const m=/rgba\([^)]*?,\s*([\d.]+)\s*\)/.exec(c); return m?+m[1]:1; };
+  const HALO=G.tipHalo, BG=G.tipBg;
+
+  ok('悬浮框底色为高透明（alpha <= 0.2）', alphaOf(BG)>0 && alphaOf(BG)<=0.2, 'alpha='+alphaOf(BG));
+  ok('文字亮描边为高亮浅色', lum(HALO)>=0.9, 'lum='+lum(HALO).toFixed(2));
+
+  const picks=[
+    ['AGE 5 可穿戴', G.WARDROBES[0].find(x=>x.kind==='wear')],
+    ['AGE 18 可穿戴', G.WARDROBES[4].find(x=>x.kind==='wear')],
+    ['AGE 12 化妆品（非穿戴但有悬浮框）', G.WARDROBES[2].find(x=>x.kind==='makeup')],
+    ['AGE 18 书堆（仅悬浮说明）', G.WARDROBES[4].find(x=>x.kind==='tip')],
+  ];
+  for(const [tag,item] of picks){
+    ok(tag+' 测试物品存在', !!item);
+    if(!item) continue;
+    rects.length=0; texts.length=0;
+    G.state.tip={item, x:100, y:100};
+    const box=s.drawTooltip();
+    ok(tag+' 悬浮框仍绘制', !!box);
+    const whole=rects.filter(r=>Math.abs(r.x-box.x)<0.01 && Math.abs(r.y-box.y)<0.01 &&
+                               Math.abs(r.w-box.w)<0.01 && Math.abs(r.h-box.h)<0.01);
+    ok(tag+' 整框底只有一层高透明填充', whole.length===1 && whole[0].c===BG,
+       'layers='+whole.length+' color='+(whole[0]&&whole[0].c));
+    ok(tag+' 不再铺不透明奶油白底', !whole.some(r=>r.c==='#fff7ee'||r.c==='#ffffff'||r.c==='#182a4a'));
+    ok(tag+' 细边框仍是半透明而非实色', rects.some(r=>r.c==='rgba(24,42,74,0.34)'));
+    ok(tag+' 顶部/左侧高光也是半透明', rects.filter(r=>r.c==='rgba(255,255,255,0.58)').length===2);
+    ok(tag+' 名称文字仍绘制', texts.some(t=>t.t===item.name));
+    const haloCount=texts.filter(t=>t.t===item.name && t.c===HALO).length;
+    ok(tag+' 名称带 1px 亮描边（8 邻域）', haloCount>=8, 'halo='+haloCount);
+    const main=texts.find(t=>t.t===item.name && lum(t.c)<0.35);
+    ok(tag+' 名称主字为深色，与亮描边对比足够', !!main && lum(HALO)-lum(main.c)>0.6,
+       main?('diff='+(lum(HALO)-lum(main.c)).toFixed(2)):'missing');
+  }
+  G.state.tip=null;
+  rects.length=0; texts.length=0;
+  G.state.tip={item:picks[0][1], x:100, y:100};
+  const b1=s.drawTooltip();
+  G.state.tip={item:picks[1][1], x:100, y:100};
+  const b2=s.drawTooltip();
+  ok('高透明底不影响按文本宽度自适应框宽', !!b1 && !!b2 && b1.w>=46 && b2.w>=46);
+  G.state.tip=null;
+}
+
+/* ---------------- 15. 合并弹窗：一个窗口、名称在标题栏、下区只放描述/选项 ---------------- */
+{
+  const env=makeEnv(1280,720,1), s=env.sandbox, G=s.PrincessGame;
+  const texts=[], painted=[], fills=[];
+  env.ctx.fillText=function(t,x,y){ texts.push({t:String(t),x,y,c:this.fillStyle}); };
+  const url2key={}; for(const k in G.assets) url2key[G.assets[k]]=k;
+  env.ctx.drawImage=function(img){ const k=url2key[img&&img._src]; if(k) painted.push(k); };
+  env.ctx.fillRect=function(x,y,w,h){ fills.push({x,y,w,h,c:this.fillStyle}); };
+  const clear=()=>{ texts.length=0; painted.length=0; fills.length=0; };
+  const regs=()=>G.regions;
+  s.state.screen='DRESSUP'; s.state.unlocked=5; s.state.modal=null; s.state.drag=null;
+
+  // choice：详情弹窗 + 选项弹窗合并成单个窗口
+  const daisy=G.WARDROBES[0].find(x=>x.id==='a5_daisy');
+  s.state.age=0; s.openChoiceModal(daisy);
+  ok('choice 不再带 itemModal 双弹窗标记', !s.state.modal.itemModal);
+  clear(); s.draw();
+  const r=s.modalRect(), low=s.choiceImageRect(r);
+  ok('合并后只注册一个 pop:close', regs().filter(q=>q.key==='pop:close').length===1);
+  ok('不再绘制旧的详情弹窗框 popupFrame', painted.indexOf('popupFrame')<0);
+  ok('下半区绘制新版选项素材', painted.indexOf('chooseDaisy')>=0);
+  ok('上半区仍绘制物品大图', painted.indexOf(s.resolveKey(daisy,'big'))>=0);
+  ok('标题栏出现物品名称（大写）', texts.some(q=>q.t===daisy.name.toUpperCase() && q.y<r.y+25));
+  ok('图片下方文字区不再重复名称', !texts.some(q=>q.t===daisy.name.toUpperCase() && q.y>=low.y));
+  const descLines=s.wrap(daisy.desc,low.w-10,8);
+  ok('choice 不额外用代码重复画一遍描述', !texts.some(q=>descLines.indexOf(q.t)>=0));
+  ok('选项区在弹窗内且位于图片区下方', low.y>r.y+25 && low.y+low.h<=r.y+r.h+0.01);
+  ok('选项素材铺满弹窗内容区宽度', Math.abs(low.w-(r.w-8))<0.01 && Math.abs(low.x-(r.x+4))<0.01);
+  ok('选项素材紧贴弹窗底边', Math.abs(low.y+low.h-(r.y+r.h-4))<0.01);
+  ok('选项素材保持 900:400 比例', Math.abs(low.w/low.h-900/400)<0.01);
+  ok('抹掉素材自带边框（顶/底粉色横条）',
+     fills.filter(q=>q.c==='#f990c3' && Math.abs(q.w-low.w)<0.01 && q.h>=8 && q.h<=14).length>=2);
+  ok('两个选项命中区仍注册', regs().filter(q=>q.key==='choice:yes'||q.key==='choice:no').length===2);
+  ok('新版素材不再注册隐形 choice:x', !regs().some(q=>q.key==='choice:x'));
+  s.closeModal();
+
+  // item：只有详情弹窗，名称同样移到标题栏，图片下只放描述
+  const it2=G.WARDROBES[0][3];
+  s.state.age=0; s.openItemModal(it2);
+  clear(); s.draw();
+  const r2=s.modalRect(), low2=s.itemDescRect(r2);
+  ok('item 弹窗标题栏出现物品名称', texts.some(q=>q.t===it2.name.toUpperCase() && q.y<r2.y+25));
+  ok('item 弹窗图片下方不再重复名称', !texts.some(q=>q.t===it2.name.toUpperCase() && q.y>=low2.y));
+  ok('item 弹窗不绘制任何选项素材', !painted.some(k=>/^choose/.test(k)));
+  ok('item 弹窗下半区只有描述文字', texts.some(q=>q.y>=low2.y && q.y<low2.y+low2.h && q.t.length>2));
+  // 只取描述文字：文件夹名称的八邻域描边字也会落在这个 y 区间里，
+  // 用「是否出自 item.desc」过滤，避免把背景文字当成描述行。
+  const dd=String(it2.desc).toLowerCase();
+  const dl=texts.filter(q=>q.y>=low2.y && q.y<low2.y+low2.h && q.t.length>2 &&
+                           dd.indexOf(q.t.toLowerCase().replace(/…$/,''))>=0);
+  const topGap=dl.length?Math.min.apply(null,dl.map(q=>q.y))-low2.y:0;
+  const botGap=dl.length?low2.y+low2.h-(Math.max.apply(null,dl.map(q=>q.y))+9):0;
+  ok('纯详情弹窗描述垂直居中', dl.length>0 && Math.abs(topGap-botGap)<12,
+     'top='+topGap.toFixed(1)+' bottom='+botGap.toFixed(1)+' lines='+dl.length);
+  ok('描述文字全部落在描述框内', dl.length>0 && dl.every(q=>q.y>=low2.y && q.y+9<=low2.y+low2.h+1));
+  ok('纯详情描述框压成底部窄条', low2.h<=r2.h*0.25 &&
+     Math.abs(low2.y+low2.h-(r2.y+r2.h-4))<0.01, 'h='+low2.h.toFixed(1));
+  const imgTop2=r2.y+4+17+4, imgH2=low2.y-imgTop2-3;
+  ok('腾出的空间让给物品大图', imgH2>low2.h*2.5, 'imgH='+imgH2.toFixed(1));
+  ok('item 弹窗仍绘制物品大图', painted.indexOf(s.resolveKey(it2,'big'))>=0);
+  ok('item 弹窗也只有单个 pop:close', regs().filter(q=>q.key==='pop:close').length===1);
+  s.closeModal();
+
+  // 所有弹窗共用同一几何，视觉统一
+  ok('choice 与 item 弹窗尺寸完全一致', r.w===r2.w && r.h===r2.h && r.x===r2.x && r.y===r2.y);
+}
+
+/* ---------------- 16. 任务栏时钟 ---------------- */
+{
+  const env=makeEnv(1280,720,1), s=env.sandbox, G=s.PrincessGame;
+  const texts=[];
+  env.ctx.fillText=function(t,x,y){ texts.push({t:String(t),x,y}); };
+  s.state.screen='DESKTOP'; s.state.modal=null; s.state.startMenu=false;
+  s.draw();
+  const v=G.view, tb=v.y+v.h-20;
+  const clock=texts.filter(q=>/^\d{2}:\d{2}$/.test(q.t));
+  ok('任务栏只画一个时钟', clock.length===1, 'found='+clock.map(q=>q.t).join(','));
+  ok('时钟文字为 13:14', clock.length===1 && clock[0].t==='13:14');
+  ok('不再出现旧的 18:24', !texts.some(q=>q.t==='18:24'));
+  ok('时钟位于任务栏右下角', clock.length===1 &&
+     clock[0].x>v.x+v.w*0.8 && clock[0].y>=tb && clock[0].y<tb+20,
+     clock.length?('x='+clock[0].x.toFixed(1)+' y='+clock[0].y.toFixed(1)+' tb='+tb.toFixed(1)):'');
 }
 
 console.log('\n全部通过：'+pass+' 项断言');

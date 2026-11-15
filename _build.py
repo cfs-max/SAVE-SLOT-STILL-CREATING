@@ -56,6 +56,16 @@ def crop_alpha(img, pad=0):
     r = min(img.width, r + pad); b = min(img.height, b + pad)
     return img.crop((l, t, r, b))
 
+def crop_white(img, thr=20):
+    """新版 4 张交互弹窗是 RGB 图，四周带白色留白；按与纯白的差异裁出有效内容。
+    旧版素材自带 XP 标题栏，新版去掉了标题栏，名称改由统一弹窗的标题栏绘制。"""
+    rgb = img.convert('RGB')
+    white = Image.new('RGB', rgb.size, (255, 255, 255))
+    d = ImageChops.difference(rgb, white).convert('L').point(lambda p: 255 if p > thr else 0)
+    bb = d.getbbox()
+    return img.crop(bb) if bb else img
+
+
 def strip_roll_border(img, n=5):
     """谢幕两张滚动图自带约 3px 深色上下边框，上下拼接滚动时交界会露出黑线。
     裁掉边框后仍按原尺寸用背景青色补回，内容（含按钮）位置完全不变。"""
@@ -93,10 +103,11 @@ ui = [
     ('folderOpen',  '存档点（正常状态）.png',                'WEBP', 92, None,        True),
     ('folderLock',  '存档点（打不开） 6.png',                'WEBP', 92, None,        True),
     ('popupFrame',  '网页_无法穿戴的物品点击弹窗素材-01.png', 'WEBP', 88, (520, 609),  False),
-    ('chooseDaisy', '小雏菊交互弹窗.png',                    'WEBP', 92, (900, 478),  False),
-    ('chooseGem',   '宝石交互弹窗.png',                      'WEBP', 92, (900, 478),  False),
-    ('chooseClass', '上课还是画画交互弹窗.png',               'WEBP', 92, (900, 478),  False),
-    ('chooseRemake','是否穿remake T恤交互弹窗.png',          'WEBP', 92, (900, 479),  False),
+    # 新版 4 张：去掉 XP 标题栏、只留粉底 + 描述 + 两个按钮，统一 900x400
+    ('chooseDaisy', '小雏菊交互弹窗2.png',                   'WEBP', 92, (900, 400),  False),
+    ('chooseGem',   '宝石交互弹窗2.png',                     'WEBP', 92, (900, 400),  False),
+    ('chooseClass', '上课还是画画交互弹窗2.png',              'WEBP', 92, (900, 400),  False),
+    ('chooseRemake','是否穿remake T恤交互弹窗2.png',         'WEBP', 92, (900, 400),  False),
     ('saveBtn',     '保存装扮.png',                          'WEBP', 90, (200, 131),  False),
     ('musicBtn',    '音乐ui.png',                            'WEBP', 92, None,        True),
     ('closeBtn',    '关闭ui.png',                            'WEBP', 90, (44, 44),    False),
@@ -105,10 +116,13 @@ ui = [
     ('endRoll2',    '滚动图片2.png',                         'WEBP', 92, None,        False),
 ]
 CROP_KEYS = {'popupFrame', 'saveBtn', 'closeBtn'}
+CROP_WHITE_KEYS = {'chooseDaisy', 'chooseGem', 'chooseClass', 'chooseRemake'}
 for key, rel, fmt, q, size, lossless in ui:
     img = load(rel)
     if key in CROP_KEYS:
         img = crop_alpha(img, pad=4)
+    if key in CROP_WHITE_KEYS:
+        img = crop_white(img)
     if key in ('endRoll1', 'endRoll2'):
         img = strip_roll_border(img)
     put(key, img, fmt=fmt, q=q, size=size, lossless=lossless)

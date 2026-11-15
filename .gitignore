@@ -7,3 +7,5 @@ node_modules/
 music/
 # 临时产物
 _regress_out.txt
+# WorkBuddy 发布应用标记（内部文件，勿进公开仓库）
+*.genie

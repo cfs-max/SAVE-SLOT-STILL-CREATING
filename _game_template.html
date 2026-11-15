@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
@@ -104,6 +104,12 @@ const C = {
   gray:'#8b97a8', grayD:'#4c5870', red:'#e0524a', brown:'#8a5a45', purple:'#8b5ad0',
   greenL:'#8ee39b', greenD:'#2f8f4e'
 };
+/* 悬浮框玻璃质感：底色 0.14 = 86% 透明，是「还能看出框的范围」的下限；
+   文字可读性不再依赖底板，改由 TIP_HALO 的 1px 亮描边保证。 */
+const TIP_BG    = 'rgba(255,247,238,0.14)';
+const TIP_HALO  = 'rgba(255,250,242,0.94)';
+const TIP_EDGE  = 'rgba(24,42,74,0.34)';
+const TIP_LIGHT = 'rgba(255,255,255,0.58)';
 const FONT = '"DDPixel","Microsoft YaHei","PingFang SC","SimHei",sans-serif';
 function R(x,y,w,h,c){ ctx.fillStyle=c; ctx.fillRect(x|0,y|0,Math.ceil(w),Math.ceil(h)); }
 function Rf(x,y,w,h,c){ ctx.fillStyle=c; ctx.fillRect(x,y,w,h); }
@@ -161,6 +167,17 @@ function ctextOutline(str,x,y,size,color,align,width){
     if(dx||dy) ctx.fillText(str,x+dx,y+dy);
   ctx.fillStyle=color; ctx.fillText(str,x,y);
 }
+/* 浅色描边字：悬浮框底色高透明后，深色文字在深色背景上仍要靠这圈亮边读清。
+   只烘一圈 1px 亮边，不铺色块，所以不会把刚去掉的底板又盖回来。 */
+function ctextHalo(str,x,y,size,color,align,width,bold){
+  ctx.font=size+'px '+FONT; ctx.textAlign=align||'left'; ctx.textBaseline='top';
+  const o=width||1;
+  ctx.fillStyle=TIP_HALO;
+  for(let dx=-o;dx<=o;dx++) for(let dy=-o;dy<=o;dy++)
+    if(dx||dy) ctx.fillText(str,x+dx,y+dy);
+  ctx.fillStyle=color; ctx.fillText(str,x,y);
+  if(bold) ctx.fillText(str,x+1,y);
+}
 
 /* ------------------------- 点击区域 ------------------------- */
 let regions=[], hoverKey=null;
@@ -176,16 +193,17 @@ function vBlock(fn){ reg('view:block',VIEW.x,VIEW.y,VIEW.w,VIEW.h,fn); }
 
 /* =====================================================================
  * 数据层：5 个年龄段 / 45 件物品
- * kind: wear 点击穿戴 | popup 点击弹窗并放置道具 | choice 点击弹窗+二选一
- *       makeup 点击替换人物立绘 | display 点击仅弹窗 | tip 仅悬浮说明
+ * kind: wear 拖拽穿戴（拖到人物身上；从人物身上拖出＝脱下）
+ *       | popup 点击弹窗并放置道具 | choice 点击弹窗+二选一
+ *       | makeup 点击替换人物立绘 | display 点击仅弹窗 | tip 仅悬浮说明
  * slot 同组互斥；z 越大越靠上（外套盖 T 恤、包挂盖托特包）
  * ===================================================================== */
 const AGES = [
-  {age:5,  label:'5岁',  place:'NURSERY'},
-  {age:8,  label:'8岁',  place:'CLASSROOM'},
-  {age:12, label:'12岁', place:'SCHOOL'},
-  {age:15, label:'15岁', place:'BEDROOM'},
-  {age:18, label:'18岁', place:'STUDIO'},
+  {age:5,  label:'AGE 5',  place:'NURSERY'},
+  {age:8,  label:'AGE 8',  place:'CLASSROOM'},
+  {age:12, label:'AGE 12', place:'SCHOOL'},
+  {age:15, label:'AGE 15', place:'BEDROOM'},
+  {age:18, label:'AGE 18', place:'STUDIO'},
 ];
 function it(id,name,desc,kind,slot,z,extra){
   return Object.assign({id,name,desc,kind,slot,z,
@@ -375,6 +393,7 @@ const state = {
   makeup:[false,false,false,false,false],
   modal:null, startMenu:false, muted:false, freePlay:false,
   endingTick:0, saveAnim:0, hoverItem:null, tip:null,
+  drag:null,          // 拖拽穿戴：{item, from:'wardrobe'|'char', x, y}
 };
 function resetAll(){
   state.screen='TITLE'; state.unlocked=1; state.completed=[false,false,false,false,false];
@@ -383,6 +402,7 @@ function resetAll(){
   state.makeup=[false,false,false,false,false];
   state.modal=null; state.startMenu=false; state.freePlay=false;
   state.endingTick=0; state.saveAnim=0; state.hoverItem=null; state.tip=null;
+  state.drag=null;
   stopMusic();
 }
 function snapshot(){
@@ -453,7 +473,7 @@ document.getElementById('musicPick').addEventListener('change',e=>{
     if(f) musicURLs[age]=URL.createObjectURL(f);
   });
   if(fs.length){ musicReady=true; if(!state.muted) playMusic(); }
-  infoModal('音乐已载入',[fs.length+' 个音频文件已就绪。','按年龄段自动匹配 5/8/12/15/18 开头的文件名。']);
+  infoModal('MUSIC LOADED',[fs.length+' AUDIO FILE(S) READY.','MATCHED BY FILENAME PREFIX 5/8/12/15/18.']);
 });
 
 /* ------------------------- 弹窗 ------------------------- */
@@ -461,14 +481,15 @@ function infoModal(title,lines){
   state.modal={kind:'info',title,lines};
 }
 function lockedModal(i){
-  state.modal={kind:'info',title:'存档点已锁定',
-    lines:['「'+AGES[i].label+'存档点」尚未解锁。','请先完成上一个存档点。']};
+  state.modal={kind:'info',title:'SAVE SLOT LOCKED',
+    lines:['THE '+AGES[i].label+' SAVE SLOT IS STILL LOCKED.','FINISH THE PREVIOUS SAVE SLOT FIRST.']};
 }
 function openItemModal(item){
   state.modal={kind:'item',item};
 }
 function openChoiceModal(item){
-  state.modal={kind:'choice',item,itemModal:true};
+  // 详情 + 选项已合并为「一个弹窗」：标题栏放名称，上半放物品图，下半放选项素材。
+  state.modal={kind:'choice',item};
 }
 function closeModal(){ state.modal=null; }
 
@@ -496,6 +517,51 @@ function wear(item){
    12 岁没选 DRAW PICTURES → 15 岁不出现 REMAKE T恤 */
 function currentItems(){ return WARDROBES[state.age].filter(itemAvailable); }
 
+/* ------------------------- 拖拽穿戴 -------------------------
+ * 只有 kind==='wear' 走拖拽：从衣橱图标按住 → 拖到人物立绘上松手即穿上；
+ * 穿上后衣橱里那一格的服饰图片隐藏，想脱下就从人物身上按住往外拖。
+ * 非可穿戴物品（雏菊/宝石/口红/化妆品/化妆袋/iPad/图画本/笔记本/
+ * MacBook/书堆等 choice·popup·makeup·display·tip）仍是单击交互，不受影响。
+ * ------------------------------------------------------------------- */
+function draggable(item){ return item.kind==='wear' && itemAvailable(item); }
+/* 已穿上的可穿戴物品才从衣橱隐藏；choice/popup 也会写 state.worn，
+   但它们是「使用中道具」，图标必须继续留在物品栏里。 */
+function wardrobeHidden(item){ return draggable(item) && !!state.worn[item.id]; }
+function wornWearList(){
+  const worn = currentItems().filter(x=>x.kind==='wear' && state.worn[x.id]);
+  return worn.slice().sort((a,b)=>layerZ(a,worn)-layerZ(b,worn));
+}
+function wornWearAt(x,y){
+  // 按住人物时决定要拖走哪一件：先找指针落在哪个手持道具矩形里，
+  // 否则按 z 取最上层的一件（叠加式衣服图层无法按像素区分，逐次拖出即可）。
+  const win=winRect(), list=wornWearList();
+  const prop=list.find(item=>{
+    const p=PROP_PLACE[item.id]; if(!p) return false;
+    return x>=win.x+win.w*p.x && x<=win.x+win.w*(p.x+p.w)
+        && y>=win.y+win.h*p.y && y<=win.y+win.h*(p.y+p.h);
+  });
+  return prop || list[list.length-1] || null;
+}
+function removeWear(item){
+  if(!item) return;
+  delete state.worn[item.id];
+  if(item.slot && state.slotOwner[item.slot]===item.id) delete state.slotOwner[item.slot];
+}
+function beginDrag(from,item,x,y){ state.drag={from,item,x,y}; }
+function moveDrag(x,y){ if(state.drag){ state.drag.x=x; state.drag.y=y; } }
+function endDrag(x,y){
+  const d=state.drag; state.drag=null;
+  if(!d || state.screen!=='DRESSUP' || state.modal) return;
+  const inside=inChar(x,y);
+  if(d.from==='wardrobe'){
+    if(!inside || !draggable(d.item) || !itemAvailable(d.item)) return;  // 拖到别处＝取消
+    if(!state.worn[d.item.id]) wear(d.item);   // 同槽互斥仍由 wear() 处理
+  } else if(d.from==='char'){
+    if(!inside) removeWear(d.item);            // 拖出人物区域＝脱下，图标回到衣橱
+  }
+}
+function cancelDrag(){ state.drag=null; }
+
 /* ------------------------- 场景 / 窗口几何 ------------------------- */
 function winRect(){
   const vw=VIEW.w, vh=VIEW.h;
@@ -504,8 +570,25 @@ function winRect(){
   return {x:VIEW.x+(vw-w)*0.62, y:VIEW.y+(vh-h)/2, w, h};
 }
 function charRect(win){
-  const ch=win.h*0.80, cw=ch*(360/518);
-  return {x:win.x+win.w*0.285-cw/2, y:win.y+win.h*0.045, w:cw, h:ch};
+  // 立绘放大到 0.92 倍窗口高：360×518 图层底部约 5.4% 是透明留白，
+  // 脚实际落在 94.6% 处。放大后脚位于 win.y+0.875h，正好踩在换装台
+  // 圆台顶面（stage 图层 y≈0.846~1.0），不再悬空。衣服图层同矩形对齐叠加。
+  const ch=win.h*0.920, cw=ch*(360/518);
+  return {x:win.x+win.w*0.285-cw/2, y:win.y+win.h*0.005, w:cw, h:ch};
+}
+function inChar(x,y){
+  const cr=charRect(winRect());
+  return x>=cr.x && x<=cr.x+cr.w && y>=cr.y && y<=cr.y+cr.h;
+}
+/* 存档按钮：原来是 92×60 放在窗口左下角，按要求缩小一半为 46×30，
+   并移到「换装台」圆台图片正中。5 张换妆台素材的 alpha 包围盒一致：
+   归一化 x 0.152~0.447、y 0.841~1.0，取中心 (0.2995, 0.921)。
+   按钮与圆台图片中心对齐，不再贴在窗口边缘。 */
+const SAVE_BTN = {w:46, h:30, cx:0.2995, cy:0.921};
+function saveBtnRect(win){
+  return {x:win.x+win.w*SAVE_BTN.cx-SAVE_BTN.w/2,
+          y:win.y+win.h*SAVE_BTN.cy-SAVE_BTN.h/2,
+          w:SAVE_BTN.w, h:SAVE_BTN.h};
 }
 function wardrobeRect(win){
   return {x:win.x+win.w*0.565, y:win.y+win.h*0.075,
@@ -530,9 +613,24 @@ function gridOf(win){
   }
   return {wr,cols,rows,cells,pad,head,layout};
 }
-function folderCell(i){
-  return {x:VIEW.x+8, y:VIEW.y+8+i*44, w:96, h:40};
+function folderGeom(){
+  // 左侧单列竖排 5 个：名称在图标正下方、无状态文字。
+  // 图标尽量放大（上限 1.8 倍 = 38→68.4），但「5 个连名称一起不超出任务栏」
+  // 是硬约束：16:9 满屏时设计视口高只有 270，每格约 49，图标最大约 42；
+  // 视口更高的窗口会一路放大到 1.8 倍。任何情况下都不会裁掉第 5 个文件夹。
+  const top=VIEW.y+3, bottom=taskbarY()-2;
+  const slotH=(bottom-top)/5;
+  const nameH=7, gap=1;
+  const iconH=Math.max(20, Math.min(38*1.8, slotH-nameH-gap));
+  const iconW=iconH*(26/38);
+  return {top, slotH, iconW, iconH, nameH, gap,
+          w:Math.max(96, iconW+16), x:VIEW.x+8};
 }
+function folderCell(i){
+  const g=folderGeom();
+  return {x:g.x, y:g.top+i*g.slotH, w:g.w, h:g.slotH-1, g};
+}
+function folderLabel(i){ return AGES[i].label+' SAVE SLOT'; }
 function taskbarY(){ return VIEW.y+VIEW.h-20; }
 
 /* ------------------------- 标题页 ------------------------- */
@@ -568,24 +666,26 @@ function drawDesktop(){
   drawTaskbar();
   if(state.saveAnim>0){
     const t=state.saveAnim/24;
-    const c=folderCell(Math.max(0,state.age));
-    Rf(c.x+30*(1-t), c.y+10*(1-t), 34*t, 44*t, 'rgba(255,255,255,0.55)');
+    const c=folderCell(Math.max(0,state.age)), g=c.g;
+    const ix=c.x+(c.w-g.iconW)/2;
+    Rf(ix+(g.iconW*(1-t))/2, c.y+(g.iconH*(1-t))/2,
+       g.iconW*t, g.iconH*t, 'rgba(255,255,255,0.55)');
     state.saveAnim--;
   }
 }
 function drawFolder(i){
-  const c=folderCell(i), open=folderOpen(i), done=state.completed[i];
+  const c=folderCell(i), g=c.g, open=folderOpen(i), done=state.completed[i];
   const on=hoverKey==='folder:'+i;
   if(on){ Rf(c.x,c.y,c.w,c.h, open?'rgba(255,255,255,0.30)':'rgba(16,20,40,0.35)');
           border(c.x,c.y,c.w,c.h,open?C.white:C.gray,1); }
   const key = done ? ('folderDone'+AGES[i].age) : (open?'folderOpen':'folderLock');
-  // 草地壁纸较花，给文字垫一层深色半透明条保证可读
-  Rf(c.x+30,c.y+2,c.w-32,36,'rgba(10,22,46,0.46)');
-  D(key, c.x+3, c.y+1, 26, 38, undefined, false);
-  ctextOutline(AGES[i].label+'存档点', c.x+33, c.y+6, 10,
-        done?C.gold:(open?C.white:C.silver), 'left');
-  ctextOutline(done?'SLOT '+(i+1)+' OK':(open?'SLOT '+(i+1):'LOCKED'),
-        c.x+33, c.y+22, 8, open?C.skyL:C.silver, 'left');
+  // 图标居中在上，名称居中在图标正下方；状态文字（SLOT / LOCKED）已取消，
+  // 锁定与完成状态只靠图标本身和名称颜色区分。
+  const ix=c.x+(c.w-g.iconW)/2;
+  D(key, ix, c.y, g.iconW, g.iconH, undefined, false);
+  const label=fitLine(folderLabel(i), c.w-4, 8);
+  ctextOutline(label, c.x+c.w/2, c.y+g.iconH+g.gap, 8,
+        done?C.gold:(open?C.white:C.silver), 'center');
   reg('folder:'+i, c.x,c.y,c.w,c.h, ()=>{ if(open) openFolder(i); else lockedModal(i); });
 }
 function drawTaskbar(){
@@ -593,10 +693,10 @@ function drawTaskbar(){
   Rf(VIEW.x,tb,VIEW.w,20,C.blueD); Rf(VIEW.x,tb,VIEW.w,2,C.blueL);
   const on=hoverKey==='task:start';
   bevel(VIEW.x+3,tb+3,50,15,on?C.greenL:C.green,C.white,C.ink);
-  ctext('开始', VIEW.x+14, tb+5, 10, C.white,'left',false);
+  ctext('START', VIEW.x+14, tb+5, 10, C.white,'left',false);
   reg('task:start',VIEW.x+3,tb+3,50,15,()=>{state.startMenu=!state.startMenu;});
   bevel(VIEW.x+VIEW.w-56,tb+3,52,15,C.silver);
-  ptext('18:24', VIEW.x+VIEW.w-50, tb+6, 1, C.ink);
+  ptext('13:14', VIEW.x+VIEW.w-50, tb+6, 1, C.ink);
 }
 
 /* ------------------------- 开始菜单 ------------------------- */
@@ -605,12 +705,12 @@ function drawStartMenu(){
   bevel(x,y,w,h,C.silver); Rf(x+2,y+2,18,h-4,C.blueD);
   ptext('XP',x+4,y+8,1,C.white);
   const items=[
-    {n:'重新开始',f:()=>{resetAll();}},
-    {n:'载入音乐…',f:()=>document.getElementById('musicPick').click()},
-    {n:'渲染精度 '+PX+'x',f:()=>setPixelDensity(PX>=3?1:PX+1)},
-    {n:'音乐 '+(state.muted?'关':'开'),f:toggleMusic},
-    {n:'关于本游戏',f:()=>infoModal('关于',['SAVE SLOT - STILL CREATING','5 个存档点，5 个年纪。','PRODUCED BY CINDY SHAN'])},
-    {n:'关闭',f:()=>{state.startMenu=false;}},
+    {n:'RESTART',f:()=>{resetAll();}},
+    {n:'LOAD MUSIC...',f:()=>document.getElementById('musicPick').click()},
+    {n:'PIXEL DENSITY '+PX+'X',f:()=>setPixelDensity(PX>=3?1:PX+1)},
+    {n:'MUSIC '+(state.muted?'OFF':'ON'),f:toggleMusic},
+    {n:'ABOUT',f:()=>infoModal('ABOUT',['SAVE SLOT - STILL CREATING','5 SAVE SLOTS, 5 AGES.','PRODUCED BY CINDY SHAN'])},
+    {n:'CLOSE',f:()=>{state.startMenu=false;}},
   ];
   items.forEach((m,i)=>{
     const ry=y+6+i*18, on=hoverKey==='menu:'+i;
@@ -658,31 +758,29 @@ function drawDressup(){
   const mb=16;
   D('musicBtn', win.x+6, win.y+6, mb, mb, state.muted?0.45:1, false);
   reg('scene:music',win.x+6,win.y+6,mb,mb,toggleMusic);
-  const sw=92,sh=60;
-  const sx=win.x+5, sy=win.y+win.h-sh-5;
-  D('saveBtn', sx, sy, sw, sh, undefined, false);
-  if(hoverKey==='scene:save') border(sx,sy,sw,sh,C.gold,2);
-  reg('scene:save',sx,sy,sw,sh,saveSlot);
+  const sb=saveBtnRect(win);
+  D('saveBtn', sb.x, sb.y, sb.w, sb.h, undefined, false);
+  if(hoverKey==='scene:save') border(sb.x,sb.y,sb.w,sb.h,C.gold,2);
+  reg('scene:save',sb.x,sb.y,sb.w,sb.h,saveSlot);
   // WARDROBE 面板
   drawWardrobe(win);
 }
 
 function drawWardrobe(win){
   const g=gridOf(win), wr=g.wr;
-  // 半透明白色圆角面板（像素化近似）
-  Rf(wr.x,wr.y+4,wr.w,wr.h-8,'rgba(255,255,255,0.72)');
-  Rf(wr.x+4,wr.y,wr.w-8,wr.h,'rgba(255,255,255,0.72)');
+  // 透明底：不填充任何白色面板，也不画标题下的白色分隔线，
+  // 只保留蓝色像素圆角线框（两条 border 拼出圆角）与 WARDROBE 标题。
   border(wr.x,wr.y+4,wr.w,wr.h-8,C.blueL,1);
   border(wr.x+4,wr.y,wr.w-8,wr.h,C.blueL,1);
   ptext('WARDROBE', wr.x+12, wr.y+7, 2, C.blueD, true);
-  Rf(wr.x+10,wr.y+g.head-2,wr.w-20,1,C.white);
   for(const c of g.cells){
+    // 已穿上的可穿戴物品：图标从衣橱隐藏，格位保留（其余物品不挪位）。
+    // 想脱下时从人物身上往外拖，图标会自动回到这一格。
+    if(wardrobeHidden(c.item)) continue;
     const on=hoverKey==='item:'+c.item.id;
     const worn=!!state.worn[c.item.id] || (c.item.slot==='makeup'&&state.makeup[state.age]);
-    if(on||worn){
-      Rf(c.x+1,c.y+1,c.w-2,c.h-2, worn?'rgba(246,195,68,0.42)':'rgba(255,255,255,0.55)');
-      border(c.x+1,c.y+1,c.w-2,c.h-2,worn?C.gold:C.white,1);
-    }
+    // 悬停 / 使用中也只给边框，不再铺半透明色块，避免透明底被重新盖住
+    if(on||worn) border(c.x+1,c.y+1,c.w-2,c.h-2,worn?C.gold:C.white,1);
     const pad=Math.min(c.w,c.h)*0.12;
     Dfit(resolveKey(c.item,'icon'), c.x+pad,c.y+pad,c.w-2*pad,c.h-2*pad, true);
     reg('item:'+c.item.id, c.x,c.y,c.w,c.h, ()=>onItemClick(c.item));
@@ -690,7 +788,8 @@ function drawWardrobe(win){
 }
 function onItemClick(item){
   if(!itemAvailable(item)) return;   // 分支未解锁的物品不应被任何入口触发
-  if(item.kind==='wear'||item.kind==='makeup'){ wear(item); return; }
+  if(item.kind==='wear') return;     // 可穿戴物品已改为拖拽，单击不再穿脱
+  if(item.kind==='makeup'){ wear(item); return; }
   if(item.kind==='tip') return;
   if(item.kind==='choice'){ openChoiceModal(item); return; }
   openItemModal(item);
@@ -713,57 +812,117 @@ function drawTooltip(){
   if(x+w>VIEW.x+VIEW.w) x=r.x-w-8;
   if(y+h>VIEW.y+VIEW.h) y=r.y-h-8;
   x=Math.max(VIEW.x+2,x); y=Math.max(VIEW.y+2,y);
-  bevel(x,y,w,h,C.cream,C.white,C.ink);
-  ctext(item.name,x+6,y+4,9,C.blueD,'left',false,true);
-  lines.forEach((l,i)=>ctext(l,x+6,y+17+i*11,8,C.ink,'left',false));
+  // 高透明底 + 细边框（不铺实心奶油白），文字另加亮描边保证任何背景都读得清
+  Rf(x,y,w,h,TIP_BG);
+  border(x,y,w,h,TIP_EDGE,1);
+  Rf(x,y,w,1,TIP_LIGHT); Rf(x,y,1,h,TIP_LIGHT);
+  ctextHalo(item.name,x+6,y+4,9,C.blueD,'left',1,true);
+  lines.forEach((l,i)=>ctextHalo(l,x+6,y+17+i*11,8,C.ink,'left',1));
   return {x,y,w,h};
 }
-const POP_RATIO = 609/520;   // 弹窗框素材裁掉透明留白后的真实宽高比
-function modalRect(kind,paired){
-  const w = kind==='choice' ? Math.min(VIEW.w*0.58,278)
-          : paired ? Math.min(VIEW.w*0.30,150) : Math.min(VIEW.w*0.44,210);
-  const h = kind==='choice'? w*(479/900) : w*POP_RATIO;
-  return {x:VIEW.x+(VIEW.w-w)/2,y:VIEW.y+(VIEW.h-h)/2,w,h};
-}
-function drawItemModal(m){
-  const item=m.item;
-  const paired=!!(state.modal && state.modal.kind==='choice');
-  const r=modalRect('item',paired);
-  // 选择弹窗同时显示时，物品弹窗靠左，二者不重叠
-  if(paired) r.x=VIEW.x+VIEW.w*0.03;
-  D('popupFrame',r.x,r.y,r.w,r.h,undefined,false);
-
-  // 内容区：标题栏以下、留足内边距，所有文字都限制在这块卡片里
-  const p=Math.max(8,r.w*0.065), titleH=r.h*0.075;
-  const c={x:r.x+p, y:r.y+titleH, w:r.w-2*p, h:r.h-titleH-p};
-  const imgH=c.h*0.56;
-  Dfit(resolveKey(item,'big'), c.x+5,c.y+4,c.w-10,imgH-8,true);
-
-  const tx=c.x, ty=c.y+imgH, tw=c.w, th=c.h-imgH;
-  Rf(tx,ty,tw,th,'rgba(255,247,238,0.93)');
-  border(tx,ty,tw,th,C.pinkD,1);
-
-  const ns=Math.max(8,Math.min(11,r.w/20)), nw=tw-10;
-  const nameLines=wrap(item.name,nw,ns).slice(0,2).map(l=>fitLine(l,nw,ns));
-  let cy=ty+4;
-  nameLines.forEach(l=>{ ctext(l,tx+5,cy,ns,C.blueD,'left',false,true); cy+=ns+2; });
-  cy+=2;
-
-  const ds=Math.max(7,Math.min(9,r.w/26));
-  const maxLines=Math.max(0,Math.floor((ty+th-5-cy)/(ds+2)));
-  if(item.desc && maxLines>0){
-    wrap(item.desc,tw-10,ds).slice(0,maxLines)
-      .forEach((l,i)=>ctext(fitLine(l,tw-10,ds),tx+5,cy+i*(ds+2),ds,C.ink,'left',false));
+/* 拖拽预览：半透明服饰图标跟随指针；从衣橱拖时高亮人物落点，
+   从人物拖时提示「拖出去＝脱下」。文字全部英文，不进任何弹窗。 */
+function drawDrag(){
+  const d=state.drag; if(!d || state.screen!=='DRESSUP') return;
+  if(d.from==='wardrobe'){
+    const cr=charRect(winRect());
+    border(cr.x,cr.y,cr.w,cr.h, inChar(d.x,d.y)?C.gold:C.blueL, 2);
   }
-  // 标题栏右上角 X（素材自带按钮图形，这里只注册点击区）
-  const xx=r.x+r.w-r.w*0.11, xy=r.y+r.h*0.012;
-  reg('pop:close',xx-3,xy-2,r.w*0.11,r.h*0.055,closeModal);
+  const box=48;
+  ctx.save(); ctx.globalAlpha=0.88;
+  Dfit(resolveKey(d.item,'icon'), d.x-box/2, d.y-box/2, box, box, true);
+  ctx.restore();
+  border(d.x-box/2,d.y-box/2,box,box, d.from==='wardrobe'?C.gold:C.pinkD,1);
+  ctextOutline(d.from==='wardrobe'?'DROP ON ME TO WEAR':'DRAG OUT TO REMOVE',
+               d.x, d.y+box/2+4, 8, C.white, 'center');
+}
+/* ---------------- 统一弹窗：一个窗口 = 标题栏(名称) + 上图片 + 下文字/选项 ----------------
+ * 旧版 choice 物品会同时弹「详情」+「选项」两个窗口，描述还重复两遍；
+ * 新版 4 张素材去掉了 XP 标题栏，正好作为合并弹窗的下半区（自带描述 + 两个按钮）。 */
+const POP = {pink:'#f990c3', cyan:'#93d5da', navy:'#133055'};
+const MODAL_TITLE_H = 17;
+const CHOICE_RATIO = 900/400;     // 新版 4 张选项素材统一构建成 900x400
+function modalRect(){
+  const w=Math.min(VIEW.w*0.64,306), h=Math.min(VIEW.h*0.88,238);
+  return {x:VIEW.x+(VIEW.w-w)/2, y:VIEW.y+(VIEW.h-h)/2-5, w, h};
+}
+/* 选项素材：铺满弹窗内容区宽度并贴底，浅蓝边与弹窗内框重合，
+ * 和上半粉色区连成一个整体。严格保持 900:400 比例，按钮归一化坐标才不会偏移。 */
+function choiceImageRect(r){
+  const w=r.w-8, h=w/CHOICE_RATIO;
+  return {x:r.x+4, y:r.y+r.h-4-h, w, h};
+}
+/* 纯详情弹窗：描述框压成底部一条窄横幅，把空间让给上方的物品大图 */
+function itemDescRect(r){
+  const w=r.w-16, h=Math.min(r.h*0.20,48);
+  return {x:r.x+8, y:r.y+r.h-4-h, w, h};
+}
+function modalLowerRect(r,isChoice){ return isChoice?choiceImageRect(r):itemDescRect(r); }
+function drawUnifiedModal(m){
+  const item=m.item, r=modalRect(), isChoice=(m.kind==='choice');
+  // XP 风格外框：深蓝边 + 浅蓝内边 + 粉底（与新版选项素材同色）
+  Rf(r.x,r.y,r.w,r.h,POP.navy);
+  Rf(r.x+2,r.y+2,r.w-4,r.h-4,POP.cyan);
+  Rf(r.x+4,r.y+4,r.w-8,r.h-8,POP.pink);
+
+  // 标题栏：物品名称只在这里出现，下方文字区不再重复
+  const ty=r.y+4, th=MODAL_TITLE_H;
+  Rf(r.x+4,ty,r.w-8,th,C.cyan);
+  Rf(r.x+4,ty+th-1,r.w-8,1,POP.navy);
+  Rf(r.x+9,ty+5,7,7,POP.navy);
+  ctext(fitLine(String(item.name).toUpperCase(),r.w-62,9),r.x+22,ty+4,9,POP.navy,'left',false,true);
+  const bw=11,bh=9,by=ty+4;
+  let closeX=0;
+  for(let i=0;i<3;i++){
+    const bx=r.x+r.w-6-(3-i)*(bw+3);
+    Rf(bx,by,bw,bh,C.silver); border(bx,by,bw,bh,POP.navy,1);
+    if(i===2){ ctext('X',bx+bw/2,by+1,7,POP.navy,'center',false); closeX=bx; }
+  }
+  reg('pop:close',closeX,by,bw+3,bh+3,isChoice?()=>choose(item,false):closeModal);
+
+  // 上方：物品大图。下半区变矮/贴底后这里拿到更多高度，图片等比放大。
+  const low=isChoice?choiceImageRect(r):itemDescRect(r);
+  const imgTop=ty+th+4, imgH=Math.max(24,low.y-imgTop-3);
+  Dfit(resolveKey(item,'big'),r.x+6,imgTop,r.w-12,imgH,true);
+
+  // 下方：choice 贴选项素材（描述由素材自带）；item 只画描述文字
+  if(isChoice){
+    const opt=choiceImageRect(r);
+    D(resolveKey(item,'choiceImg'),opt.x,opt.y,opt.w,opt.h,undefined,false);
+    // 抹掉素材自带的浅蓝四边框：它已贴底铺满，抹掉后与上半区是同一块粉底，
+    // 只剩描述文字和两个按钮浮在上面，窗口看起来是一个整体而非两个叠框。
+    // 素材四周有约 4 设计像素白边 + 浅蓝/深蓝双描边，e 要盖过整圈才不留残线。
+    const e=10;
+    Rf(opt.x,opt.y-2,opt.w,e+2,POP.pink);
+    Rf(opt.x,opt.y+opt.h-e,opt.w,e,POP.pink);
+    Rf(opt.x,opt.y-2,e,opt.h+2,POP.pink);
+    Rf(opt.x+opt.w-e,opt.y-2,e,opt.h+2,POP.pink);
+    const rects=choiceRects(opt,item.choiceImg);
+    if(hoverKey==='choice:yes') border(rects.yes.x,rects.yes.y,rects.yes.w,rects.yes.h,C.white,2);
+    if(hoverKey==='choice:no')  border(rects.no.x, rects.no.y, rects.no.w, rects.no.h, C.white,2);
+    reg('choice:yes',rects.yes.x,rects.yes.y,rects.yes.w,rects.yes.h,()=>choose(item,true));
+    reg('choice:no', rects.no.x, rects.no.y, rects.no.w, rects.no.h, ()=>choose(item,false));
+  } else {
+    Rf(low.x,low.y,low.w,low.h,'rgba(255,247,238,0.93)');
+    border(low.x,low.y,low.w,low.h,C.pinkD,1);
+    const ds=Math.max(7,Math.min(9,r.w/28));
+    const maxLines=Math.max(0,Math.floor((low.h-8)/(ds+2)));
+    if(item.desc && maxLines>0){
+      const lines=wrap(item.desc,low.w-10,ds).slice(0,maxLines)
+        .map(l=>fitLine(l,low.w-10,ds));
+      // 描述垂直居中：单行短说明时下半区不会留出一大片空白。
+      // 弹窗尺寸与 choice 保持一致，切换物品时窗口不跳动。
+      const startY=low.y+Math.max(2,(low.h-lines.length*(ds+2)+2)/2);
+      lines.forEach((l,i)=>ctext(l,low.x+5,startY+i*(ds+2),ds,C.ink,'left',false));
+    }
+  }
   return r;
 }
 /* ------------------------- 二选一弹窗按钮 -------------------------
- * 数值是对 4 张交互弹窗素材逐像素实测的按钮包围盒（归一化到弹窗绘制矩形），
- * 格式 [x0,y0,x1,y1]。四张素材的按钮宽度、高度、纵向位置都不一样，
- * 旧版统一用 (0.19~0.36 / 0.63~0.81, y 0.70~0.84) 会框歪或框不全。
+ * 数值是对「裁掉白边、统一缩到 900x400」的新版 4 张素材逐像素实测的
+ * 按钮填充色包围盒，归一化到 choiceImageRect()（合并弹窗的下半区矩形）。
+ * 格式 [x0,y0,x1,y1]。四张素材的按钮宽高、纵向位置都不一样，
+ * 旧版统一用一套坐标会框歪或框不全；CHOICE_PAD 再外扩覆盖按钮深色描边。
  *
  * 更关键：素材的「左右语义」并不统一，不能一律按「左 yes / 右 no」注册：
  *   chooseDaisy  左 KEEP IT / 右 LEAVE IT                    → 左 yes
@@ -773,16 +932,16 @@ function drawItemModal(m){
  * ------------------------------------------------------------------- */
 const CHOICE_UI = {
   chooseDaisy: {
-    yes:[0.209,0.713,0.344,0.808], no:[0.639,0.713,0.774,0.808],
+    yes:[0.1744,0.7025,0.3244,0.8225], no:[0.6556,0.7025,0.8056,0.8225],
   },
   chooseGem: {
-    yes:[0.639,0.723,0.774,0.817], no:[0.209,0.723,0.344,0.817],
+    yes:[0.6556,0.6950,0.8056,0.8200], no:[0.1744,0.6975,0.3244,0.8200],
   },
   chooseClass: {
-    yes:[0.688,0.678,0.822,0.802], no:[0.167,0.684,0.335,0.809],
+    yes:[0.7111,0.6450,0.8611,0.8050], no:[0.1278,0.6525,0.3144,0.8125],
   },
   chooseRemake: {
-    yes:[0.209,0.689,0.344,0.859], no:[0.639,0.689,0.822,0.854],
+    yes:[0.1744,0.6525,0.3244,0.8750], no:[0.6556,0.6525,0.8611,0.8675],
   },
 };
 const CHOICE_PAD = 2;   // 白框外扩 2 设计像素，按钮完整落在白框内
@@ -795,20 +954,6 @@ function choiceRects(r, imgKey){
     h:r.h*(b[3]-b[1]) + CHOICE_PAD*2,
   });
   return {yes:cvt(ui.yes), no:cvt(ui.no)};
-}
-function drawChoiceModal(m){
-  const item=m.item, r=modalRect('choice');
-  r.x=VIEW.x+VIEW.w-r.w-VIEW.w*0.045;
-  D(resolveKey(item,'choiceImg'),r.x,r.y,r.w,r.h,undefined,false);
-  const rects=choiceRects(r,item.choiceImg);
-  // 悬停白框与命中区共用同一矩形，保证「点到的就是被框住的按钮」
-  if(hoverKey==='choice:yes') border(rects.yes.x,rects.yes.y,rects.yes.w,rects.yes.h,C.white,2);
-  if(hoverKey==='choice:no')  border(rects.no.x, rects.no.y, rects.no.w, rects.no.h, C.white,2);
-  reg('choice:yes',rects.yes.x,rects.yes.y,rects.yes.w,rects.yes.h,()=>choose(item,true));
-  reg('choice:no', rects.no.x, rects.no.y, rects.no.w, rects.no.h, ()=>choose(item,false));
-  const xx=r.x+r.w*0.87, xy=r.y+r.h*0.05;
-  reg('choice:x',xx-4,xy-4,r.w*0.08,r.h*0.10,()=>choose(item,false));
-  return r;
 }
 function choose(item,yes){
   state.choices[item.choice]=yes;
@@ -838,22 +983,20 @@ function drawModal(){
     ctext(state.modal.title,x+8,y+4,10,C.white,'left',false);
     (state.modal.lines||[]).forEach((l,i)=>ctext(l,x+10,y+26+i*14,9,C.ink,'left',false));
     const bw=54,bh=18,bx=x+w-bw-8,by=y+h-bh-7;
-    bevel(bx,by,bw,bh,C.gold); ctext('确定',bx+bw/2,by+4,9,C.ink,'center',false);
+    bevel(bx,by,bw,bh,C.gold); ctext('OK',bx+bw/2,by+4,9,C.ink,'center',false);
     reg('modal:ok',bx,by,bw,bh,closeModal);
     const xx=x+w-18;
     reg('modal:x',xx,y+2,16,15,closeModal);
     return;
   }
-  if(state.modal.kind==='item'){ drawItemModal(state.modal); return; }
-  if(state.modal.kind==='choice'){
-    if(state.modal.itemModal) drawItemModal({item:state.modal.item});
-    drawChoiceModal(state.modal);
-  }
+  // 详情弹窗与选项弹窗已合并：item / choice 都走同一个 drawUnifiedModal()
+  drawUnifiedModal(state.modal);
 }
 
 /* ------------------------- 存档 / 解锁 / 结局 ------------------------- */
 function openFolder(i){
   if(!folderOpen(i)) { lockedModal(i); return; }
+  cancelDrag();
   state.age=i; state.screen='DRESSUP'; state.startMenu=false; state.modal=null;
   restore(state.saved[i]);
   // 切换年龄段：强制恢复播放状态，上一曲归零，从头播放当前年龄段曲目
@@ -862,6 +1005,7 @@ function openFolder(i){
   playMusic();
 }
 function saveSlot(){
+  cancelDrag();
   state.saved[state.age]=snapshot();
   state.completed[state.age]=true;
   if(state.age+1<5) state.unlocked=Math.max(state.unlocked,state.age+2);
@@ -873,6 +1017,7 @@ function saveSlot(){
   }
 }
 function freePlayAgain(){
+  cancelDrag();
   state.screen='DESKTOP'; state.freePlay=true; state.unlocked=5;
   state.endingTick=0; state.modal=null;
 }
@@ -939,7 +1084,7 @@ function draw(){
   if(state.modal) drawModal();
   // 悬浮说明（只在换装窗口且无弹窗时）
   state.tip=null;
-  if(state.screen==='DRESSUP' && !state.modal && !state.startMenu){
+  if(state.screen==='DRESSUP' && !state.modal && !state.startMenu && !state.drag){
     const hr=hit(mouse.x,mouse.y);
     if(hr && hr.key.indexOf('item:')===0){
       const item=ITEM_BY_ID[hr.key.slice(5)];
@@ -947,9 +1092,11 @@ function draw(){
     }
   }
   drawTooltip();
-  const hr=hit(mouse.x,mouse.y);
+  drawDrag();
+  const hr=state.drag?null:hit(mouse.x,mouse.y);
   hoverKey=hr?hr.key:null;
-  const cur = ready('cursor')
+  const cur = state.drag ? 'grabbing'
+    : ready('cursor')
     ? 'url("'+IMG.cursor+'") 0 0, '+(hr?'pointer':'default')
     : (hr?'pointer':'default');
   if(cur!==lastCursor){ canvas.style.cursor=cur; lastCursor=cur; }
@@ -958,21 +1105,50 @@ function draw(){
 }
 
 /* ------------------------- 输入 ------------------------- */
-canvas.addEventListener('pointermove',e=>{ mouse=toCanvas(e); if(dragItem) dragPos=mouse; });
+canvas.addEventListener('pointermove',e=>{
+  mouse=toCanvas(e);
+  if(state.drag) moveDrag(mouse.x,mouse.y);
+});
 canvas.addEventListener('pointerdown',e=>{
   mouse=toCanvas(e);
   const r=hit(mouse.x,mouse.y);
-  if(r&&r.fn) r.fn();
+  if(state.screen==='DRESSUP' && !state.modal && !state.startMenu){
+    // ① 衣橱里的可穿戴物品：按下即开始拖拽，不再「一点就穿上」
+    if(r && r.key.indexOf('item:')===0){
+      const item=ITEM_BY_ID[r.key.slice(5)];
+      if(item && draggable(item) && !wardrobeHidden(item)){
+        beginDrag('wardrobe',item,mouse.x,mouse.y);
+        try{ canvas.setPointerCapture(e.pointerId); }catch(_){}
+        return;
+      }
+    }
+    // ② 人物身上已穿的物品：按住往外拖＝脱下。
+    //    音乐/存档/关闭等 UI 命中区优先，只有落在空背景上才起拖。
+    if((!r || r.key==='view:block') && inChar(mouse.x,mouse.y)){
+      const item=wornWearAt(mouse.x,mouse.y);
+      if(item){
+        beginDrag('char',item,mouse.x,mouse.y);
+        try{ canvas.setPointerCapture(e.pointerId); }catch(_){}
+        return;
+      }
+    }
+  }
+  if(r&&r.fn) r.fn();          // 其余物品、按钮、弹窗：保持单击交互
 });
+canvas.addEventListener('pointerup',e=>{
+  mouse=toCanvas(e);
+  if(state.drag) endDrag(mouse.x,mouse.y);
+});
+canvas.addEventListener('pointercancel',cancelDrag);
 canvas.addEventListener('pointerleave',()=>{mouse={x:-9999,y:-9999};});
 window.addEventListener('keydown',e=>{
   if(e.key==='Escape'){
+    cancelDrag();
     if(state.modal) closeModal();
     else if(state.startMenu) state.startMenu=false;
     else if(state.screen==='DRESSUP'){ state.screen='DESKTOP'; pauseMusic(); }
   }
 });
-let dragItem=null, dragPos=null;   // 保留拖拽接口（当前玩法为纯点击）
 
 /* ------------------------- 对外接口 ------------------------- */
 window.PrincessGame = {
@@ -986,8 +1162,17 @@ window.PrincessGame = {
   get propPlace(){ return PROP_PLACE; },
   get choiceUI(){ return CHOICE_UI; },
   get choicePad(){ return CHOICE_PAD; },
-  choiceRects,
+  get regions(){ return regions; },
+  get tipBg(){ return TIP_BG; },
+  get tipHalo(){ return TIP_HALO; },
+  get folderLabels(){ return AGES.map((a,i)=>folderLabel(i)); },
+  get saveButton(){ return Object.assign({},SAVE_BTN); },
+  get drag(){ return state.drag; },
+  choiceRects, modalRect, choiceImageRect, itemDescRect, modalLowerRect, drawUnifiedModal,
   get endingFrames(){ return END_FRAMES; },
+  charRect, inChar, saveBtnRect, folderGeom, folderCell, folderLabel,
+  draggable, wardrobeHidden, wornWearList, wornWearAt, removeWear,
+  beginDrag, moveDrag, endDrag, cancelDrag,
   setPixelDensity, resize,
   setAsset(key,url){
     IMG[key]=url; const i=new Image(); i.src=url; IM[key]=i;

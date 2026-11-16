@@ -905,8 +905,16 @@ function outsideChar(s){
   const v=G.view, tb=v.y+v.h-20;
   const clock=texts.filter(q=>/^\d{2}:\d{2}$/.test(q.t));
   ok('任务栏只画一个时钟', clock.length===1, 'found='+clock.map(q=>q.t).join(','));
-  ok('时钟文字为 13:14', clock.length===1 && clock[0].t==='13:14');
-  ok('不再出现旧的 18:24', !texts.some(q=>q.t==='18:24'));
+  const mins=t=>{ const p=t.split(':').map(Number); return p[0]*60+p[1]; };
+  const shown=clock.length?clock[0].t:'';
+  const now=G.clockText();
+  ok('时钟为合法 24 小时制 HH:MM',
+     /^([01]\d|2[0-3]):[0-5]\d$/.test(shown), 'shown='+shown);
+  ok('时钟跟随系统真实时间（允许跨分钟 1 分误差）',
+     Math.abs(mins(shown)-mins(now))<=1 || Math.abs(mins(shown)-mins(now))>=1439,
+     'shown='+shown+' now='+now);
+  ok('时钟不再是硬编码 13:14', shown!=='13:14' || now==='13:14',
+     'shown='+shown+' now='+now);
   ok('时钟位于任务栏右下角', clock.length===1 &&
      clock[0].x>v.x+v.w*0.8 && clock[0].y>=tb && clock[0].y<tb+20,
      clock.length?('x='+clock[0].x.toFixed(1)+' y='+clock[0].y.toFixed(1)+' tb='+tb.toFixed(1)):'');
@@ -1118,10 +1126,11 @@ function outsideChar(s){
      at('a15_blacktee').layerScale===0.97 && at('a15_remake').layerScale===0.97);
   ok('T 恤缩放不再把衣服压到肩膀以下',
      at('a15_blacktee').layerScale>0.95 && at('a15_remake').layerScale>0.95);
-  ok('两件 T 恤再上移 5px 贴回肩线',
-     at('a15_blacktee').layerDY===-5 && at('a15_remake').layerDY===-5);
-  ok('牛仔外套与两件 T 恤同步上移，叠穿时不露 T 恤领口',
-     at('a15_jacket').layerDY===at('a15_blacktee').layerDY);
+  ok('两件 T 恤下移到 -2',
+     at('a15_blacktee').layerDY===-2 && at('a15_remake').layerDY===-2);
+  ok('牛仔外套单独下移到 -1（两件 T 恤仍 -2）',
+     at('a15_jacket').layerDY===-1 &&
+     at('a15_blacktee').layerDY===-2 && at('a15_remake').layerDY===-2);
   ok('其它年龄段服饰不受缩放影响',
      !at('a8_tshirt').layerScale && !at('a18_magenta').layerScale);
   /* 17. 18 岁书堆 / MacBook 立绘内道具稍微放大 1.1 倍 */

@@ -252,18 +252,18 @@ const WARDROBES = [
       tip:false, big:'BIG_a15_nails', layer:'L_nails_hand'}),
     it('a15_earrings','Earrings','I went with a friend to get my ears pierced.','wear','ears',52),
     // 两件 T 恤穿戴图层：0.97 轻微收窄 + 整体上移 5 设计像素，领口贴回肩线、不再露肩
-    it('a15_blacktee','Black T-shirt','Black helps to accentuate the waist.','wear','top',20,{layerScale:0.97,layerDY:-5}),
+    it('a15_blacktee','Black T-shirt','Black helps to accentuate the waist.','wear','top',20,{layerScale:0.97,layerDY:-2}),
     it('a15_jeans','Jeans','A pair of flared jeans I chose myself; I like the vintage style.','wear','bottom',18),
     it('a15_headphones','Headphones','Wear them every day, and the world of music is free from worries.','wear','head',60),
     // 牛仔外套肩线同样比人物肩点略低，与两件 T 恤一致上移 5 设计像素
-    it('a15_jacket','Jacket','','wear','topOuter',48,{layerDY:-5}),
+    it('a15_jacket','Jacket','','wear','topOuter',48,{layerDY:-1}),
     it('a15_boots','Boots','','wear','shoes',10),
     it('a15_ipad','iPad','The original characters I designed on my iPad have become a hit online, so I can now earn a bit of pocket money.','popup','propIpad2',70,{
       tip:false, big:'BIG_a15_ipad', layer:'L_a15_ipad'}),
     it('a15_cosmetics','Cosmetics',"I’ve picked up a few bits and bobs of cosmetics here and there, and I’m teaching myself how to apply make-up.",'makeup','makeup',0),
     it('a15_remake','REMAKE T-shirt','The stars and the pony used to live in the doodle book from maths class.','choice','top',26,{
       choice:'remake', choiceImg:'chooseRemake', yes:'REMAKE T-SHIRT', no:'CHOOSE COMFORTABLE OUTFITS',
-      big:'T_a15_remake', tip:false, onYes:'wear', onNo:'none', layerScale:0.97, layerDY:-5,
+      big:'T_a15_remake', tip:false, onYes:'wear', onNo:'none', layerScale:0.97, layerDY:-2,
       requires:'notebook', hideWhenWorn:true}),   // 只有 12 岁选了 DRAW PICTURES 才解锁；穿上后衣橱格隐藏，可从人物拖出脱下
     // 新增十字架项链：可拖拽穿戴，desc 为空 → 悬浮框只显示名称
     it('a15_necklace','Cross necklace','','wear','neck',54),
@@ -706,6 +706,12 @@ function drawFolder(i){
         done?C.gold:(open?C.white:C.silver), 'center');
   reg('folder:'+i, c.x,c.y,c.w,c.h, ()=>{ if(open) openFolder(i); else lockedModal(i); });
 }
+/* 任务栏时钟：跟随系统真实时间，24 小时制 HH:MM。
+   draw() 每帧调用 → 跨分钟自动刷新，无需定时器。 */
+function clockText(){
+  const d=new Date(), p=n=>String(n).padStart(2,'0');
+  return p(d.getHours())+':'+p(d.getMinutes());
+}
 function drawTaskbar(){
   const tb=taskbarY();
   Rf(VIEW.x,tb,VIEW.w,20,C.blueD); Rf(VIEW.x,tb,VIEW.w,2,C.blueL);
@@ -714,7 +720,7 @@ function drawTaskbar(){
   ctext('START', VIEW.x+14, tb+5, 10, C.white,'left',false);
   reg('task:start',VIEW.x+3,tb+3,50,15,()=>{state.startMenu=!state.startMenu;});
   bevel(VIEW.x+VIEW.w-56,tb+3,52,15,C.silver);
-  ptext('13:14', VIEW.x+VIEW.w-50, tb+6, 1, C.ink);
+  ptext(clockText(), VIEW.x+VIEW.w-50, tb+6, 1, C.ink);
 }
 
 /* ------------------------- 开始菜单 ------------------------- */
@@ -1230,7 +1236,7 @@ window.PrincessGame = {
   choiceRects, modalRect, choiceImageRect, itemDescRect, modalLowerRect, choiceBigImageRect, drawUnifiedModal,
   get endingFrames(){ return END_FRAMES; },
   get about(){ return ABOUT_LINES; },
-  isBehind, layerKeyOf,
+  isBehind, layerKeyOf, clockText,
   charRect, inChar, saveBtnRect, folderGeom, folderCell, folderLabel,
   draggable, wardrobeHidden, wornWearList, wornWearAt, removeWear,
   beginDrag, moveDrag, endDrag, cancelDrag,

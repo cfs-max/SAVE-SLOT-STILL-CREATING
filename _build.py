@@ -179,6 +179,7 @@ ITEMS_SRC = {
     'a15_ipad':      '15岁/15岁ipad画画弹窗.png',
     'a15_cosmetics': '15岁/15岁化妆品.png',
     'a15_remake':    '15岁/15岁remakeT恤.png',
+    'a15_necklace':  '15岁/15岁项链.png',
     # 18 岁
     'a18_piercings': '18岁/18岁鼻钉唇钉.png',
     'a18_pinkpants': '18岁/18岁粉色卫裤.png',

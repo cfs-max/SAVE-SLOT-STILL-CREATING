@@ -217,7 +217,7 @@ const WARDROBES = [
       choice:'daisy', choiceImg:'chooseDaisy', yes:'KEEP IT', no:'LEAVE IT',
       big:'T_a5_daisy', tip:false, onYes:'wear', onNo:'none'}),
     it('a5_top','Pink top','','wear','top',20,{icon:'T_a5_top',layer:'L_a5_top'}),
-    it('a5_skirt','Puff-skirt','A slightly over-the-top puff-skirt in my favourite shade of pink!','wear','bottom',30,{layer:'L_a5_skirt'}),
+    it('a5_skirt','Puff-skirt','A slightly over-the-top puff-skirt in my favourite shade of pink!','wear','bottom',18,{layer:'L_a5_skirt'}),
     it('a5_rabbit','Purple rabbit soft toy',"It’s actually a knock-off of a Jellycat soft toy, but it’s my best friend.",'wear','handL',40),
   ],
   /* ---------------- 8 岁 · 7 件 ---------------- */
@@ -227,15 +227,16 @@ const WARDROBES = [
       big:'BIG_a8_gem', tip:false, onYes:'wear', onNo:'none'}),
     it('a8_tshirt','Blue T-shirt',"Liking pink seems a bit pretentious; perhaps I should start liking blue now – it’s much cooler.",'wear','top',20),
     it('a8_sandals','Sandals','','wear','shoes',10),
-    it('a8_denim','Denim skirt','','wear','bottom',30),
-    it('a8_trousers','Three-quarter-length trousers','an outfit that looks a bit old-fashioned now.','wear','bottom',30),
+    // 牛仔短裙与七分裤可叠穿：分槽，短裙 z=19 盖在七分裤 z=18 之上
+    it('a8_denim','Denim skirt','','wear','bottom',19),
+    it('a8_trousers','Three-quarter-length trousers','an outfit that looks a bit old-fashioned now.','wear','bottomBase',18),
     it('a8_sketch','Sketchbook','I like to secretly pull it out during maths lessons to doodle in it','popup','propSketch',70,{
       tip:false, big:'a8sketchBig', layer:'a8sketchLayer', icon:'T_a8_sketch'}),
     it('a8_warmers','Arm warmers',"Mum says I’m too mischievous, so this way I won’t get my hands dirty!",'wear','arms',35),
   ],
   /* ---------------- 12 岁 · 6 件 ---------------- */
   [
-    it('a12_pants','Tapered pants','Look more handsome when dancing.','wear','bottom',30),
+    it('a12_pants','Tapered pants','Look more handsome when dancing.','wear','bottom',18),
     it('a12_ipad','iPad',"It’s a birthday present from Mum and Dad, and I often use it to doodle.",'popup','propIpad',70,{
       tip:false, big:'BIG_a12_ipad', layer:'L_ipad_active12'}),
     it('a12_trainers','Trainers','','wear','shoes',10),
@@ -245,28 +246,32 @@ const WARDROBES = [
       big:'BIG_a12_notebook', tip:false, onYes:'variant', onNo:'variant'}),
     it('a12_lipstick','Lipstick',"Mom gave me the lipstick she doesn't use.",'makeup','makeup',0,{tip:true}),
   ],
-  /* ---------------- 15 岁 · 10 件 ---------------- */
+  /* ---------------- 15 岁 · 11 件 ---------------- */
   [
     it('a15_nails','Wearable Nail Art','Affordable Wearable Nails.','popup','propNails',70,{
       tip:false, big:'BIG_a15_nails', layer:'L_nails_hand'}),
     it('a15_earrings','Earrings','I went with a friend to get my ears pierced.','wear','ears',52),
-    it('a15_blacktee','Black T-shirt','Black helps to accentuate the waist.','wear','top',20),
-    it('a15_jeans','Jeans','A pair of flared jeans I chose myself; I like the vintage style.','wear','bottom',30),
+    // 两件 T 恤穿戴图层：0.97 轻微收窄 + 整体上移 5 设计像素，领口贴回肩线、不再露肩
+    it('a15_blacktee','Black T-shirt','Black helps to accentuate the waist.','wear','top',20,{layerScale:0.97,layerDY:-5}),
+    it('a15_jeans','Jeans','A pair of flared jeans I chose myself; I like the vintage style.','wear','bottom',18),
     it('a15_headphones','Headphones','Wear them every day, and the world of music is free from worries.','wear','head',60),
-    it('a15_jacket','Jacket','','wear','topOuter',48),
+    // 牛仔外套肩线同样比人物肩点略低，与两件 T 恤一致上移 5 设计像素
+    it('a15_jacket','Jacket','','wear','topOuter',48,{layerDY:-5}),
     it('a15_boots','Boots','','wear','shoes',10),
     it('a15_ipad','iPad','The original characters I designed on my iPad have become a hit online, so I can now earn a bit of pocket money.','popup','propIpad2',70,{
       tip:false, big:'BIG_a15_ipad', layer:'L_a15_ipad'}),
     it('a15_cosmetics','Cosmetics',"I’ve picked up a few bits and bobs of cosmetics here and there, and I’m teaching myself how to apply make-up.",'makeup','makeup',0),
     it('a15_remake','REMAKE T-shirt','The stars and the pony used to live in the doodle book from maths class.','choice','top',26,{
       choice:'remake', choiceImg:'chooseRemake', yes:'REMAKE T-SHIRT', no:'CHOOSE COMFORTABLE OUTFITS',
-      big:'T_a15_remake', tip:false, onYes:'wear', onNo:'none',
-      requires:'notebook'}),   // 只有 12 岁选了 DRAW PICTURES 才解锁
+      big:'T_a15_remake', tip:false, onYes:'wear', onNo:'none', layerScale:0.97, layerDY:-5,
+      requires:'notebook', hideWhenWorn:true}),   // 只有 12 岁选了 DRAW PICTURES 才解锁；穿上后衣橱格隐藏，可从人物拖出脱下
+    // 新增十字架项链：可拖拽穿戴，desc 为空 → 悬浮框只显示名称
+    it('a15_necklace','Cross necklace','','wear','neck',54),
   ],
   /* ---------------- 18 岁 · 18 件 ---------------- */
   [
     it('a18_piercings','Nose and lip piercings',"I finally went and got the nose and lip piercings I’d been wanting for ages; they’re so sparkly they really lift my spirits.",'wear','face',62),
-    it('a18_pinkpants','Pink tracksuit bottoms',"Pink is one of my favourite colours; I don’t see why that should be embarrassing – they’re lovely.",'wear','bottom',30),
+    it('a18_pinkpants','Pink tracksuit bottoms',"Pink is one of my favourite colours; I don’t see why that should be embarrassing – they’re lovely.",'wear','bottom',18),
     it('a18_pinkpearl','Pink pearl necklace','I love this fancy look; it suits me perfectly.','wear','neck',54),
     it('a18_makeupbag','Make-up bag',"I’ve bought a really good one—it’s for my own make-up.",'makeup','makeup',0),
     it('a18_coat','Yellow leopard-print coat','I saved up to buy my favourite designer brand.','wear','topOuter',48),
@@ -276,13 +281,15 @@ const WARDROBES = [
     it('a18_pearlear','Pearl earrings','','wear','ears',52),
     it('a18_necklace','Pearl necklace','','wear','neck',54),
     it('a18_macbook','MacBook',"It looks very much like the few I used to pick up off the ground when I was a child. I realise I’ve always loved these little sparkling things.",'display','',0,{
-      tip:false, big:'a18macBig', icon:'a18macIcon', variant:'gem'}),
+      tip:false, big:'a18macBig', icon:'a18macIcon', layer:'a18macLayer',
+      variant:'gem', behind:true, layerScale:1.1}),   // 点击后放到人物右侧上方，且在人物图层之下
     it('a18_hairdye','Blue striped hair dye','','wear','head',60),
     it('a18_blueshoes','Blue shoes','','wear','shoes',17),  // 盖在黄色丝袜(16)上
     it('a18_magenta','Magenta strappy top','','wear','top',20),
-    it('a18_books','Pile of books','textbooks and exercise books for various subjects.','tip','',0,{tip:true}),
+    // 书堆/MacBook 立绘内插画略小，统一放大 1.1 倍（围绕立绘中心，位置不变）
+    it('a18_books','Pile of books','textbooks and exercise books for various subjects.','tip','',0,{tip:true, behind:true, layerScale:1.1}),  // 点击后放到人物左侧下方，且在人物图层之下
     it('a18_queentop','‘Queen of Fashion’ printed blue halter-neck top','','wear','top',20),
-    it('a18_fringed','Blue fringed skirt','I love the island style—it’s free-spirited and vibrant.','wear','bottom',30),
+    it('a18_fringed','Blue fringed skirt','I love the island style—it’s free-spirited and vibrant.','wear','bottom',18),
     it('a18_bunny','Bunny Bag Charm','An ugly-cute rainbow bunny. I always clip her onto my bag.','wear','bagCharm',50),
   ],
 ];
@@ -320,13 +327,12 @@ const WARDROBE_LAYOUT = [
     ['a12_pants',     'a12_ipad'],
     ['a12_trainers',  'a12_notebook'],
   ],
-  /* 15 岁 3×4：三件上衣 → 耳环/耳机/iPad → 牛仔裤/化妆品/靴子 → 穿戴甲居中
-     （穿戴甲在效果图里画在人物手部、WARDROBE 框外，故补在末行） */
+  /* 15 岁 3×4：三件上衣 → 耳环/耳机/iPad → 牛仔裤/化妆品/靴子 → 项链/穿戴甲 */
   [
     ['a15_blacktee',  'a15_remake',  'a15_jacket'],
     ['a15_earrings',  'a15_headphones', 'a15_ipad'],
     ['a15_jeans',     'a15_cosmetics',  'a15_boots'],
-    [null,            'a15_nails',   null],
+    ['a15_necklace',  'a15_nails',   null],
   ],
   /* 18 岁 4×5：头部与上装 → 配饰与包 → 项链/化妆包/包挂 → 下装与电子 → 书与鞋居中 */
   [
@@ -347,6 +353,7 @@ function resolveKey(item, field){
   if(k==='a8sketchLayer')    k = state.choices.daisy ? 'L_sketch_yes' : 'L_sketch_no';
   if(k==='a18macBig')        k = state.choices.gem ? 'T_macbook_diamond' : 'T_a18_macbook';
   if(k==='a18macIcon')       k = state.choices.gem ? 'T_macbook_diamond' : 'T_a18_macbook';
+  if(k==='a18macLayer')      k = state.choices.gem ? 'L_macbook_diamond' : 'L_a18_macbook';
   if(k==='BIG_a12_notebook') k = state.choices.notebook ? 'T_notebook_sticker' : 'T_notebook_open';
   return k;
 }
@@ -376,6 +383,10 @@ function layerKeyOf(item){
   const f=PROP_LAYER[item.id];
   return f ? f() : resolveKey(item,'layer');
 }
+/* 需要画在「人物图层之下」的道具：PROP_PLACE 的手持/使用中道具，
+   以及 18 岁书堆 / MacBook（源图本身就是按人物全画布定位好的独立插画）。
+   先画这些、再画人物、最后画服饰，道具就不会遮盖人物与衣服。 */
+function isBehind(item){ return !!item.behind || !!PROP_PLACE[item.id]; }
 /* 图层排序规则：18 岁「蓝色染发」是覆盖整个头部的图层(z=60)，
    会把耳环(z=52)压在下面，导致戴了染发后两耳看不到任何耳饰。
    规则：染发与任意耳环同时穿戴时，把耳环临时提到染发之上；
@@ -479,8 +490,8 @@ document.getElementById('musicPick').addEventListener('change',e=>{
 });
 
 /* ------------------------- 弹窗 ------------------------- */
-function infoModal(title,lines){
-  state.modal={kind:'info',title,lines};
+function infoModal(title,lines,opts){
+  state.modal=Object.assign({kind:'info',title,lines},opts||{});
 }
 function lockedModal(i){
   state.modal={kind:'info',title:'SAVE SLOT LOCKED',
@@ -526,11 +537,14 @@ function currentItems(){ return WARDROBES[state.age].filter(itemAvailable); }
  * MacBook/书堆等 choice·popup·makeup·display·tip）仍是单击交互，不受影响。
  * ------------------------------------------------------------------- */
 function draggable(item){ return item.kind==='wear' && itemAvailable(item); }
-/* 已穿上的可穿戴物品才从衣橱隐藏；choice/popup 也会写 state.worn，
-   但它们是「使用中道具」，图标必须继续留在物品栏里。 */
-function wardrobeHidden(item){ return draggable(item) && !!state.worn[item.id]; }
+/* 已穿上的可穿戴物品从衣橱隐藏；choice/popup 也会写 state.worn，
+   但它们是「使用中道具」，图标必须继续留在物品栏里。
+   例外：REMAKE T恤虽是 choice，一旦穿上就是一件衣服（hideWhenWorn），
+   按可穿戴物品处理——衣橱格隐藏，并可从人物身上拖出脱下。 */
+function takeOffable(item){ return item.kind==='wear' || !!item.hideWhenWorn; }
+function wardrobeHidden(item){ return takeOffable(item) && !!state.worn[item.id]; }
 function wornWearList(){
-  const worn = currentItems().filter(x=>x.kind==='wear' && state.worn[x.id]);
+  const worn = currentItems().filter(x=>takeOffable(x) && state.worn[x.id]);
   return worn.slice().sort((a,b)=>layerZ(a,worn)-layerZ(b,worn));
 }
 function wornWearAt(x,y){
@@ -575,18 +589,20 @@ function charRect(win){
   // 立绘放大到 0.92 倍窗口高：360×518 图层底部约 5.4% 是透明留白，
   // 脚实际落在 94.6% 处。放大后脚位于 win.y+0.875h，正好踩在换装台
   // 圆台顶面（stage 图层 y≈0.846~1.0），不再悬空。衣服图层同矩形对齐叠加。
+  // 前四个年龄段立绘整体右移一点，视觉上更靠圆台中心；18 岁保持原位。
   const ch=win.h*0.920, cw=ch*(360/518);
-  return {x:win.x+win.w*0.285-cw/2, y:win.y+win.h*0.005, w:cw, h:ch};
+  const cx = state.age<4 ? 0.31 : 0.285;
+  return {x:win.x+win.w*cx-cw/2, y:win.y+win.h*0.005, w:cw, h:ch};
 }
 function inChar(x,y){
   const cr=charRect(winRect());
   return x>=cr.x && x<=cr.x+cr.w && y>=cr.y && y<=cr.y+cr.h;
 }
-/* 存档按钮：原来是 92×60 放在窗口左下角，按要求缩小一半为 46×30，
-   并移到「换装台」圆台图片正中。5 张换妆台素材的 alpha 包围盒一致：
-   归一化 x 0.152~0.447、y 0.841~1.0，取中心 (0.2995, 0.921)。
-   按钮与圆台图片中心对齐，不再贴在窗口边缘。 */
-const SAVE_BTN = {w:46, h:30, cx:0.2995, cy:0.921};
+/* 存档按钮：原来是 92×60 放在窗口左下角，先缩到 46×30，再按需求缩到 34×22。
+   水平仍居中于「换装台」圆台（5 张素材 alpha 包围盒 x 0.152~0.447，中心 0.2995），
+   但不再与圆台中心 (y 0.921) 对齐：下移到 y 0.95，让按钮顶边落在最深脚底
+   （源图 97.7% × 立绘 92% → 窗口 90.4%）之下，不再压住人物鞋子；底边仍在窗口内。 */
+const SAVE_BTN = {w:34, h:22, cx:0.2995, cy:0.95};
 function saveBtnRect(win){
   return {x:win.x+win.w*SAVE_BTN.cx-SAVE_BTN.w/2,
           y:win.y+win.h*SAVE_BTN.cy-SAVE_BTN.h/2,
@@ -653,8 +669,8 @@ function drawTitle(){
     Rf(sx,sy,sw,sh,'rgba(255,255,255,0.32)');
     border(sx,sy,sw,sh,C.pinkD,1);
   }
-  if(Math.floor(tick/28)%2===0)
-    ptextC('CLICK TO START', cx, cy+ih/2+18, 2, C.blueD, true);
+  // 提示文字常驻、不再闪烁：一排小字固定在电脑图标下方
+  ptextC('CLICK TO START', cx, cy+ih/2+18, 2, C.blueD, true);
   // 整页 / 电脑 / START 都能进桌面；START 最后注册，hover 才会命中它
   vBlock(()=>{ state.screen='DESKTOP'; });
   reg('title:go', ix, iy, iw, ih, ()=>{ state.screen='DESKTOP'; });
@@ -702,16 +718,20 @@ function drawTaskbar(){
 }
 
 /* ------------------------- 开始菜单 ------------------------- */
+const ABOUT_LINES = [
+  'I hope to use women’s personal growth as a guiding thread to create a digital space where players can freely explore aesthetics and identity, granting them the right to create and redefine. ‘Save Slot’ is not merely a save file for game progress; it is a record of ‘Still Creating. I am never a finished version’.',
+  'Cindy Shan',
+];
 function drawStartMenu(){
-  const x=VIEW.x+3, y=taskbarY()-116, w=132, h=116;
+  // 删掉无效的 MUSIC ON/OFF 项（桌面场景本就不播音乐，切换状态听不出差别），
+  // 以及 LOAD MUSIC... 项（BGM 已全部内联到单文件，无需外部加载）。
+  const x=VIEW.x+3, y=taskbarY()-98, w=132, h=98;
   bevel(x,y,w,h,C.silver); Rf(x+2,y+2,18,h-4,C.blueD);
   ptext('XP',x+4,y+8,1,C.white);
   const items=[
     {n:'RESTART',f:()=>{resetAll();}},
-    {n:'LOAD MUSIC...',f:()=>document.getElementById('musicPick').click()},
     {n:'PIXEL DENSITY '+PX+'X',f:()=>setPixelDensity(PX>=3?1:PX+1)},
-    {n:'MUSIC '+(state.muted?'OFF':'ON'),f:toggleMusic},
-    {n:'ABOUT',f:()=>infoModal('ABOUT',['SAVE SLOT - STILL CREATING','5 SAVE SLOTS, 5 AGES.','PRODUCED BY CINDY SHAN'])},
+    {n:'ABOUT',f:()=>infoModal('ABOUT',ABOUT_LINES,{wide:true,sign:true})},
     {n:'CLOSE',f:()=>{state.startMenu=false;}},
   ];
   items.forEach((m,i)=>{
@@ -743,17 +763,22 @@ function drawDressup(){
   const cr=charRect(win);
   const baseChar = state.makeup[state.age] && ready('makeup'+AGES[state.age].age)
                  ? 'makeup'+AGES[state.age].age : 'char'+AGES[state.age].age;
-  D(baseChar, cr.x,cr.y,cr.w,cr.h, undefined, true);
-  // 已穿戴 / 已放置图层，按 z 排序；染发与耳环同穿时由 layerZ() 把耳环提到染发之上。
-  // 衣服类按人物画布 360×518 全尺寸对齐叠加；手持道具按 PROP_PLACE 单独定位。
+  // 三段绘制：道具在人物身后 → 人物立绘 → 服饰在人物之上。
+  // 手持/使用中道具与 18 岁书堆/MacBook 由 isBehind() 归入第一段，不再遮盖人物与衣服。
   const worn = currentItems().filter(x=>state.worn[x.id]);
-  const layers = worn.slice().sort((a,b)=>layerZ(a,worn)-layerZ(b,worn));
-  for(const x of layers){
+  const byZ=(a,b)=>layerZ(a,worn)-layerZ(b,worn);
+  const paintLayer=(x)=>{
     const p=PROP_PLACE[x.id];
-    if(p) Dfit(layerKeyOf(x), win.x+win.w*p.x, win.y+win.h*p.y,
-               win.w*p.w, win.h*p.h, true);
-    else  D(layerKeyOf(x), cr.x,cr.y,cr.w,cr.h, undefined, true);
-  }
+    if(p){ Dfit(layerKeyOf(x), win.x+win.w*p.x, win.y+win.h*p.y,
+                win.w*p.w, win.h*p.h, true); return; }
+    const s=x.layerScale||1, dy=x.layerDY||0;   // layerDY：向上为负，微调图层贴合肩线
+    if(s===1) D(layerKeyOf(x), cr.x,cr.y+dy,cr.w,cr.h, undefined, true);
+    else { const dw=cr.w*s, dh=cr.h*s;
+           D(layerKeyOf(x), cr.x+(cr.w-dw)/2, cr.y+(cr.h-dh)/2+dy, dw,dh, undefined, true); }
+  };
+  worn.filter(isBehind).sort(byZ).forEach(paintLayer);
+  D(baseChar, cr.x,cr.y,cr.w,cr.h, undefined, true);
+  worn.filter(x=>!isBehind(x)).sort(byZ).forEach(paintLayer);
   ctx.restore();
   border(win.x,win.y,win.w,win.h,C.ink,2);
   // 左上角音乐按钮、左下角存档按钮
@@ -774,7 +799,8 @@ function drawWardrobe(win){
   // 只保留蓝色像素圆角线框（两条 border 拼出圆角）与 WARDROBE 标题。
   border(wr.x,wr.y+4,wr.w,wr.h-8,C.blueL,1);
   border(wr.x+4,wr.y,wr.w-8,wr.h,C.blueL,1);
-  ptext('WARDROBE', wr.x+12, wr.y+7, 2, C.blueD, true);
+  // 15 岁背景偏浅，标题换白色更显眼（其余年龄段保持深蓝）
+  ptext('WARDROBE', wr.x+12, wr.y+7, 2, state.age===3?C.white:C.blueD, true);
   for(const c of g.cells){
     // 已穿上的可穿戴物品：图标从衣橱隐藏，格位保留（其余物品不挪位）。
     // 想脱下时从人物身上往外拖，图标会自动回到这一格。
@@ -791,6 +817,8 @@ function drawWardrobe(win){
 function onItemClick(item){
   if(!itemAvailable(item)) return;   // 分支未解锁的物品不应被任何入口触发
   if(item.kind==='wear') return;     // 可穿戴物品已改为拖拽，单击不再穿脱
+  // 18 岁书堆 / MacBook：点击即放到人物身后（源图自身已按全画布定位好方位）
+  if(item.behind) state.worn[item.id]=true;
   if(item.kind==='makeup'){ wear(item); return; }
   if(item.kind==='tip') return;
   if(item.kind==='choice'){ openChoiceModal(item); return; }
@@ -803,7 +831,8 @@ function drawTooltip(){
   const r=state.tip; if(!r) return;
   const item=r.item; if(!item.tip) return;
   const maxW=Math.min(150,VIEW.w*0.34);
-  const lines=wrap(item.desc,maxW-12,8).slice(0,6).map(l=>fitLine(l,maxW-12,8));
+  // 无描述物品（如 Cross necklace）悬浮框只显示名称，不留空行
+  const lines=item.desc?wrap(item.desc,maxW-12,8).slice(0,6).map(l=>fitLine(l,maxW-12,8)):[];
   // 按真实文本宽度收缩：只有名称（如 Pink top）或短描述的物品不该占满整条长框
   ctx.font='9px '+FONT;
   let need=ctx.measureText(item.name).width;
@@ -826,15 +855,11 @@ function drawTooltip(){
    从人物拖时提示「拖出去＝脱下」。文字全部英文，不进任何弹窗。 */
 function drawDrag(){
   const d=state.drag; if(!d || state.screen!=='DRESSUP') return;
-  if(d.from==='wardrobe'){
-    const cr=charRect(winRect());
-    border(cr.x,cr.y,cr.w,cr.h, inChar(d.x,d.y)?C.gold:C.blueL, 2);
-  }
+  // 不再给人物 / 拖拽图标画橘色描边框，只保留半透明图标跟随与文字提示
   const box=48;
   ctx.save(); ctx.globalAlpha=0.88;
   Dfit(resolveKey(d.item,'icon'), d.x-box/2, d.y-box/2, box, box, true);
   ctx.restore();
-  border(d.x-box/2,d.y-box/2,box,box, d.from==='wardrobe'?C.gold:C.pinkD,1);
   ctextOutline(d.from==='wardrobe'?'DROP ON ME TO WEAR':'DRAG OUT TO REMOVE',
                d.x, d.y+box/2+4, 8, C.white, 'center');
 }
@@ -845,7 +870,9 @@ const POP = {pink:'#f990c3', cyan:'#93d5da', navy:'#133055'};
 const MODAL_TITLE_H = 17;
 const CHOICE_RATIO = 900/400;     // 新版 4 张选项素材统一构建成 900x400
 function modalRect(){
-  const w=Math.min(VIEW.w*0.64,306), h=Math.min(VIEW.h*0.88,238);
+  // 整体缩小：宽度 306→248 后选项素材按 900:400 等比变矮，
+  // 反而腾出更多高度给物品大图 —— 图片放大、粉色留白减少。
+  const w=Math.min(VIEW.w*0.52,248), h=Math.min(VIEW.h*0.84,226);
   return {x:VIEW.x+(VIEW.w-w)/2, y:VIEW.y+(VIEW.h-h)/2-5, w, h};
 }
 /* 选项素材：铺满弹窗内容区宽度并贴底，浅蓝边与弹窗内框重合，
@@ -856,10 +883,21 @@ function choiceImageRect(r){
 }
 /* 纯详情弹窗：描述框压成底部一条窄横幅，把空间让给上方的物品大图 */
 function itemDescRect(r){
-  const w=r.w-16, h=Math.min(r.h*0.20,48);
-  return {x:r.x+8, y:r.y+r.h-4-h, w, h};
+  const w=r.w-12, h=Math.min(r.h*0.15,34);
+  return {x:r.x+6, y:r.y+r.h-4-h, w, h};
 }
 function modalLowerRect(r,isChoice){ return isChoice?choiceImageRect(r):itemDescRect(r); }
+/* 雏菊 / 宝石 / 笔记本三个二选一弹窗的物品大图：
+   原先大图被 Dfit 塞满「标题栏下沿 ↔ 选项面板上沿」整条带，顶边紧贴标题栏。
+   这里把大图略微放大并整体下移一点：顶边留出 4px 呼吸位，底边探入选项面板
+   顶部的粉色空白（描述文字在更下方，不会被盖住）。面板画完后再画大图，
+   否则下探的部分会被面板盖掉。*/
+function choiceBigImageRect(r){
+  const imgTop=r.y+4+MODAL_TITLE_H+2;
+  const baseH=Math.max(24,choiceImageRect(r).y-imgTop-2);
+  const h=baseH*1.18, top=imgTop+4;
+  return {x:r.x+(r.w-h)/2, y:top, w:h, h};
+}
 function drawUnifiedModal(m){
   const item=m.item, r=modalRect(), isChoice=(m.kind==='choice');
   // XP 风格外框：深蓝边 + 浅蓝内边 + 粉底（与新版选项素材同色）
@@ -882,10 +920,11 @@ function drawUnifiedModal(m){
   }
   reg('pop:close',closeX,by,bw+3,bh+3,isChoice?()=>choose(item,false):closeModal);
 
-  // 上方：物品大图。下半区变矮/贴底后这里拿到更多高度，图片等比放大。
+  // 纯详情弹窗的大图画在这里；choice 弹窗的大图要压到选项面板上方，
+  // 所以推迟到面板（及其边框抹除）画完之后再画，见下方 isChoice 分支。
   const low=isChoice?choiceImageRect(r):itemDescRect(r);
-  const imgTop=ty+th+4, imgH=Math.max(24,low.y-imgTop-3);
-  Dfit(resolveKey(item,'big'),r.x+6,imgTop,r.w-12,imgH,true);
+  const imgTop=ty+th+2, imgH=Math.max(24,low.y-imgTop-2);
+  if(!isChoice) Dfit(resolveKey(item,'big'),r.x+4,imgTop,r.w-8,imgH,true);
 
   // 下方：choice 贴选项素材（描述由素材自带）；item 只画描述文字
   if(isChoice){
@@ -899,6 +938,9 @@ function drawUnifiedModal(m){
     Rf(opt.x,opt.y+opt.h-e,opt.w,e,POP.pink);
     Rf(opt.x,opt.y-2,e,opt.h+2,POP.pink);
     Rf(opt.x+opt.w-e,opt.y-2,e,opt.h+2,POP.pink);
+    // 最后画放大并下移的物品大图：盖在面板顶部粉色留白上，与上半区连成一体
+    const big=choiceBigImageRect(r);
+    Dfit(resolveKey(item,'big'),big.x,big.y,big.w,big.h,true);
     const rects=choiceRects(opt,item.choiceImg);
     if(hoverKey==='choice:yes') border(rects.yes.x,rects.yes.y,rects.yes.w,rects.yes.h,C.white,2);
     if(hoverKey==='choice:no')  border(rects.no.x, rects.no.y, rects.no.w, rects.no.h, C.white,2);
@@ -978,12 +1020,25 @@ function choose(item,yes){
 function drawModal(){
   vBlock(null);
   if(state.modal.kind==='info'){
-    const w=Math.min(VIEW.w*0.52,220), h=92;
+    // ABOUT 文案很长：宽弹窗 + 按真实字宽自动折行，高度随行数自适应
+    const wide=!!state.modal.wide;
+    const w=Math.min(VIEW.w*(wide?0.70:0.52), wide?336:220);
+    const fs=wide?8:9, lh=fs+5, maxW=w-20;
+    const rows=[];
+    (state.modal.lines||[]).forEach(l=>{
+      // 只有 ABOUT 这类长文案才按宽度折行；锁定提示 / 音乐提示保持原文不截断
+      if(wide) wrap(l,maxW,fs).forEach(p=>rows.push(fitLine(p,maxW,fs)));
+      else rows.push(l);
+    });
+    const h=Math.max(92, 26+rows.length*lh+30);
     const x=VIEW.x+(VIEW.w-w)/2, y=VIEW.y+(VIEW.h-h)/2;
     bevel(x,y,w,h,C.silver);
     Rf(x+2,y+2,w-4,17,C.blueD);
     ctext(state.modal.title,x+8,y+4,10,C.white,'left',false);
-    (state.modal.lines||[]).forEach((l,i)=>ctext(l,x+10,y+26+i*14,9,C.ink,'left',false));
+    // 最后一行是署名（Cindy Shan）时按惯例靠右对齐；正文仍左对齐。
+    // 按弹窗标题识别 ABOUT，保证菜单入口与外部直接 infoModal 调用行为一致。
+    const isSign = i=>i===rows.length-1 && (state.modal.sign || state.modal.title==='ABOUT');
+    rows.forEach((l,i)=>ctext(l,isSign(i)?x+w-10:x+10,y+26+i*lh,fs,C.ink,isSign(i)?'right':'left',false));
     const bw=54,bh=18,bx=x+w-bw-8,by=y+h-bh-7;
     bevel(bx,by,bw,bh,C.gold); ctext('OK',bx+bw/2,by+4,9,C.ink,'center',false);
     reg('modal:ok',bx,by,bw,bh,closeModal);
@@ -1172,8 +1227,10 @@ window.PrincessGame = {
   get folderLabels(){ return AGES.map((a,i)=>folderLabel(i)); },
   get saveButton(){ return Object.assign({},SAVE_BTN); },
   get drag(){ return state.drag; },
-  choiceRects, modalRect, choiceImageRect, itemDescRect, modalLowerRect, drawUnifiedModal,
+  choiceRects, modalRect, choiceImageRect, itemDescRect, modalLowerRect, choiceBigImageRect, drawUnifiedModal,
   get endingFrames(){ return END_FRAMES; },
+  get about(){ return ABOUT_LINES; },
+  isBehind, layerKeyOf,
   charRect, inChar, saveBtnRect, folderGeom, folderCell, folderLabel,
   draggable, wardrobeHidden, wornWearList, wornWearAt, removeWear,
   beginDrag, moveDrag, endDrag, cancelDrag,
